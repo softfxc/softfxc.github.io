@@ -1,1 +1,1 @@
-# softfxc.github.io
+The ONLY official site for Soft FXC.
