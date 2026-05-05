@@ -3,74 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>SoftFXC - Home</title>
-    <style>
-        body {
-            background-color: #121212; /* Dark theme background */
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        header {
-            background-color: #1E1E1E;
-            padding: 10px;
-            text-align: center;
-        }
-        nav {
-            margin: 20px 0;
-        }
-        nav a {
-            color: #BB86FC;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        .sidebar {
-            background-color: #000;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        .sidebar h3 {
-            color: white;
-            font-weight: bold;
-        }
-        .support {
-            background-color: #333;
-            color: gray;
-            padding: 10px;
-            text-align: center;
-        }
-        section {
-            margin-bottom: 20px;
-        }
-    </style>
+    <title>Your Site Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to SoftFXC</h1>
+        <img src="logo.png" alt="Logo">
+        <nav>
+            <ul>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#releases">Releases</a></li>
+                <li><a href="#emuladores">Emuladores</a></li>
+            </ul>
+        </nav>
     </header>
-    <nav>
-        <a href="#releases">Releases</a>
-        <a href="#emuladores">Emuladores</a>
-        <a href="#faq">FAQ</a>
-    </nav>
-    <div class="sidebar">
-        <h3>ARCHIVES</h3>
-        <h3>UNCATEGORIZED</h3>
+    <div class="container">
+        <aside class="sidebar">
+            <h2><strong>ARCHIVES</strong></h2>
+            <ul>
+                <li>Uncategorized</li>
+            </ul>
+        </aside>
+        <main>
+            <section id="faq">
+                <h2>FAQ</h2>
+                <!-- Insert FAQ content here -->
+            </section>
+            <section id="releases">
+                <h2>Releases</h2>
+                <!-- Insert Releases content here from releases.md -->
+            </section>
+            <section id="emuladores">
+                <h2>Emuladores</h2>
+                <!-- Insert Emuladores content here from emuladores.html -->
+            </section>
+        </main>
+        <aside class="profile">
+            <h3 style="color: gray;">Please support my site</h3>
+        </aside>
     </div>
-    <section id="faq">
-        <h2>FAQ</h2>
-        <p>[FAQ content goes here]</p>
-    </section>
-    <section id="releases">
-        <h2>Releases</h2>
-        <p>Content from releases.md will be dynamically displayed here.</p>
-    </section>
-    <section id="emuladores">
-        <h2>Emuladores</h2>
-        <p>Content from emuladores.html will be dynamically displayed here.</p>
-    </section>
-    <div class="support">
-        <p>If you need support, please contact us!</p>
-    </div>
+    <footer>
+        <p>© 2026 Your Site Name</p>
+    </footer>
 </body>
 </html>
