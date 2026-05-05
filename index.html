@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Soft FXC</title>
+
+  <!-- Favicon / browser bar tiny icon -->
+  <link rel="icon" type="image/png" href="favicon.png" sizes="32x32" />
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <style>
+    :root {
+      --black: #000000;
+      --dark: #0a0a0a;
+      --pink: #f887ff;
+      --green: #008000;
+      --white: #ffffff;
+      --off-white: #f7f7f7;
+      --text-dark: #202020;
+      --muted: #8f8f8f;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(10, 10, 10, 0.78);
+      --panel-strong: rgba(0, 0, 0, 0.88);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--off-white);
+      color: var(--text-dark);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* HEADER COMO EN LA CAPTURA */
+    .site-header {
+      width: 100%;
+      height: 136px;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo-link {
+      position: absolute;
+      top: 0;
+      left: 58px;
+      height: 42px;
+      display: flex;
+      align-items: flex-start;
+      color: var(--pink);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      line-height: 42px;
+      z-index: 3;
+    }
+
+    .logo-link img {
+      display: block;
+      width: 116px;
+      height: 42px;
+      object-fit: contain;
+      object-position: left top;
+    }
+
+    .logo-fallback {
+      display: none;
+      color: var(--pink);
+      white-space: nowrap;
+    }
+
+    .top-tabs {
+      position: absolute;
+      left: 50%;
+      bottom: 27px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 64px;
+      min-width: 520px;
+      z-index: 3;
+    }
+
+    .top-tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: none;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .top-tab:hover,
+    .top-tab.active {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(248, 135, 255, 0.55);
+    }
+
+    .search-corner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 75px;
+      height: 60px;
+      border: 0;
+      background: var(--green);
+      color: #d6ffd6;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 25px;
+      z-index: 4;
+    }
+
+    .search-corner:hover {
+      filter: brightness(1.14);
+    }
+
+    .search-popover {
+      position: absolute;
+      top: 67px;
+      right: 12px;
+      width: min(340px, calc(100vw - 24px));
+      background: rgba(0, 0, 0, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 10px;
+      display: none;
+      z-index: 5;
+    }
+
+    .search-popover.active {
+      display: block;
+    }
+
+    .search-popover input {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #101010;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 12px 13px;
+      outline: 0;
+      font-size: 14px;
+    }
+
+    .search-popover input::placeholder {
+      color: #808080;
+    }
+
+    /* CUERPO */
+    .layout {
+      min-height: calc(100vh - 136px);
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr) 286px;
+      background: var(--off-white);
+    }
+
+    .left-sidebar {
+      background: #ffffff;
+      padding: 112px 30px 34px 40px;
+      border-right: 1px solid #ededed;
+      color: #222222;
+    }
+
+    .archives-title {
+      margin: 0 0 6px;
+      font-size: 0;
+      line-height: 1;
+    }
+
+    .archives-title::after {
+      content: "ARCHIVES";
+      display: block;
+      font-size: 19px;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #222222;
+    }
+
+    .archive-link {
+      display: block;
+      margin-top: 0;
+      color: #222222;
+      font-size: 18px;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .center-stage {
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+      background: #101010;
+      padding: 44px 28px 70px;
+      isolation: isolate;
+    }
+
+    /* video.mp4 queda detrás de la UI central */
+    .background-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      opacity: 0.62;
+      background: #000000;
+    }
+
+    .video-dark-layer {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(248, 135, 255, 0.12), transparent 34%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.78));
+      z-index: -2;
+    }
+
+    .central-ui {
+      width: min(920px, 100%);
+      margin: 0 auto;
+      background: var(--panel);
+      color: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 26px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.46);
+      backdrop-filter: blur(8px);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .tab-panel h1,
+    .tab-panel h2,
+    .tab-panel h3 {
+      color: var(--pink);
+      margin-top: 0;
+    }
+
+    .tab-panel p,
+    .tab-panel li {
+      color: #eeeeee;
+      line-height: 1.65;
+    }
+
+    .release-content {
+      overflow-wrap: anywhere;
+    }
+
+    .release-content a,
+    .piracy-links a {
+      color: var(--pink);
+    }
+
+    .release-content pre {
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      overflow-x: auto;
+    }
+
+    .release-content code {
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2px 5px;
+    }
+
+    .release-content pre code {
+      border: 0;
+      padding: 0;
+    }
+
+    .notice {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.42);
+      border-radius: 14px;
+      padding: 15px;
+      color: #d0d0d0;
+    }
+
+    .video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 16px;
+      background: #000000;
+      display: block;
+      margin: 0 0 18px;
+    }
+
+    .piracy-links {
+      display: grid;
+      gap: 13px;
+    }
+
+    .link-card {
+      background: rgba(0, 0, 0, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 15px;
+    }
+
+    .link-card strong {
+      display: block;
+      margin-bottom: 7px;
+      color: #ffffff;
+    }
+
+    .right-sidebar {
+      background: #ffffff;
+      padding: 34px 20px 40px;
+      border-left: 1px solid #ededed;
+    }
+
+    .profile-card {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-card img {
+      width: 100%;
+      max-width: 200px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 12px;
+      border-radius: 4px;
+      background: #f2f2f2;
+    }
+
+    .support-text {
+      margin: 0;
+      color: #8a8a8a;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .blogger-images {
+      display: grid;
+      gap: 15px;
+    }
+
+    .blogger-link {
+      display: block;
+      background: #ffffff;
+      border: 1px solid #ececec;
+      padding: 8px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .blogger-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      text-decoration: none;
+    }
+
+    .blogger-link img {
+      width: 100%;
+      display: block;
+      background: #eeeeee;
+    }
+
+    .blogger-link span {
+      display: block;
+      margin-top: 8px;
+      color: #222222;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .site-footer {
+      grid-column: 1 / -1;
+      background: #ffffff;
+      color: #999999;
+      border-top: 1px solid #ededed;
+      padding: 18px 28px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 210px minmax(0, 1fr);
+      }
+
+      .right-sidebar {
+        grid-column: 1 / -1;
+        border-left: 0;
+        border-top: 1px solid #ededed;
+      }
+
+      .blogger-images {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        height: 124px;
+      }
+
+      .logo-link {
+        left: 18px;
+      }
+
+      .top-tabs {
+        gap: 22px;
+        min-width: auto;
+        width: calc(100% - 120px);
+        bottom: 21px;
+      }
+
+      .layout {
+        display: block;
+        min-height: auto;
+      }
+
+      .left-sidebar {
+        padding: 26px 22px;
+      }
+
+      .center-stage {
+        padding: 28px 15px 44px;
+      }
+
+      .central-ui {
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .blogger-images {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .top-tabs {
+        gap: 14px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        left: 16px;
+        transform: none;
+        width: calc(100% - 110px);
+      }
+
+      .top-tab {
+        flex: 0 0 auto;
+      }
+
+      .blogger-images {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="https://softfxc.github.io/" aria-label="Soft FXC home">
+      <img
+        src="logo.png"
+        alt="Soft FXC"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+      />
+      <span class="logo-fallback">Soft FXC</span>
+    </a>
+
+    <nav class="top-tabs" aria-label="Main navigation">
+      <button class="top-tab active" type="button" data-tab="faq">FAQ</button>
+      <button class="top-tab" type="button" data-tab="releases">Releases</button>
+      <button class="top-tab" type="button" data-tab="piracy">Piracy</button>
+    </nav>
+
+    <button class="search-corner" type="button" aria-label="Search" id="searchToggle">🔍</button>
+    <div class="search-popover" id="searchPopover">
+      <input id="siteSearch" type="search" placeholder="Search Soft FXC..." aria-label="Search Soft FXC" />
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="left-sidebar">
+      <h2 class="archives-title">ARCHIVES</h2>
+      <a class="archive-link" href="#uncategorized">UNCATEGORIZED</a>
+    </aside>
+
+    <main class="center-stage">
+      <video class="background-video" autoplay muted loop playsinline preload="metadata">
+        <source src="video.mp4" type="video/mp4" />
+      </video>
+      <div class="video-dark-layer"></div>
+
+      <section class="central-ui" aria-live="polite">
+        <article id="faq" class="tab-panel active">
+          <h2>FAQ</h2>
+          <p>Welcome to the official Soft FXC site.</p>
+          <p id="uncategorized">ARCHIVES UNCATEGORIZED</p>
+        </article>
+
+        <article id="releases" class="tab-panel">
+          <h2>Releases</h2>
+          <div id="releaseContent" class="release-content">
+            <p class="notice">Loading releases.md...</p>
+          </div>
+        </article>
+
+        <article id="piracy" class="tab-panel">
+          <h2>Piracy</h2>
+
+          <iframe
+            class="video-frame"
+            src="https://www.youtube.com/embed/LsxqW9xU-u4"
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+
+          <div class="piracy-links">
+            <div class="link-card">
+              <strong>YouTube</strong>
+              <a href="https://youtu.be/LsxqW9xU-u4?is=trf6LKO6CNw1h52f" target="_blank" rel="noopener noreferrer">
+                https://youtu.be/LsxqW9xU-u4?is=trf6LKO6CNw1h52f
+              </a>
+            </div>
+
+            <div class="link-card">
+              <strong>GitHub</strong>
+              <a href="https://github.com/modgames44/HiperVisor-Denuvo" target="_blank" rel="noopener noreferrer">
+                https://github.com/modgames44/HiperVisor-Denuvo
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <aside class="right-sidebar">
+      <section class="profile-card">
+        <img
+          src="Profile.jpg"
+          alt="Soft FXC Profile"
+          onerror="this.onerror=null; this.src='https://github.com/softfxc.png?size=240';"
+        />
+        <p class="support-text">Please support my site</p>
+      </section>
+
+      <section class="blogger-images" aria-label="Blogger linked images">
+        <a class="blogger-link" href="FXC%20Repacker.PNG" target="_blank" rel="noopener noreferrer">
+          <img src="FXC%20Repacker.PNG" alt="FXC Repacker" />
+          <span>FXC Repacker</span>
+        </a>
+
+        <a class="blogger-link" href="UHD%20Downloader.PNG" target="_blank" rel="noopener noreferrer">
+          <img src="UHD%20Downloader.PNG" alt="UHD Downloader" />
+          <span>UHD Downloader</span>
+        </a>
+
+        <a class="blogger-link" href="IMG1-PS2.jpg" target="_blank" rel="noopener noreferrer">
+          <img src="IMG1-PS2.jpg" alt="IMG1 PS2" />
+          <span>IMG1-PS2</span>
+        </a>
+
+        <a class="blogger-link" href="rpcs3.jpg" target="_blank" rel="noopener noreferrer">
+          <img src="rpcs3.jpg" alt="RPCS3" />
+          <span>RPCS3</span>
+        </a>
+      </section>
+    </aside>
+
+    <footer class="site-footer">© 2026 Soft FXC</footer>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".top-tab");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    function showTab(tabId) {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tab === tabId;
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === tabId);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => showTab(tab.dataset.tab));
+    });
+
+    const searchToggle = document.getElementById("searchToggle");
+    const searchPopover = document.getElementById("searchPopover");
+    const siteSearch = document.getElementById("siteSearch");
+
+    searchToggle.addEventListener("click", () => {
+      searchPopover.classList.toggle("active");
+      if (searchPopover.classList.contains("active")) {
+        siteSearch.focus();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      const clickedSearch = searchPopover.contains(event.target) || searchToggle.contains(event.target);
+      if (!clickedSearch) {
+        searchPopover.classList.remove("active");
+      }
+    });
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function inlineMarkdown(value) {
+      return value
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    }
+
+    function markdownToHtml(markdown) {
+      const lines = escapeHtml(markdown).split(/\r?\n/);
+      let html = "";
+      let inList = false;
+      let inCode = false;
+
+      lines.forEach((line) => {
+        if (line.trim().startsWith("```")) {
+          if (!inCode) {
+            html += "<pre><code>";
+            inCode = true;
+          } else {
+            html += "</code></pre>";
+            inCode = false;
+          }
+          return;
+        }
+
+        if (inCode) {
+          html += line + "\n";
+          return;
+        }
+
+        if (/^\s*[-*]\s+/.test(line)) {
+          if (!inList) {
+            html += "<ul>";
+            inList = true;
+          }
+          html += "<li>" + inlineMarkdown(line.replace(/^\s*[-*]\s+/, "")) + "</li>";
+          return;
+        }
+
+        if (inList) {
+          html += "</ul>";
+          inList = false;
+        }
+
+        if (/^###\s+/.test(line)) {
+          html += "<h3>" + inlineMarkdown(line.replace(/^###\s+/, "")) + "</h3>";
+        } else if (/^##\s+/.test(line)) {
+          html += "<h2>" + inlineMarkdown(line.replace(/^##\s+/, "")) + "</h2>";
+        } else if (/^#\s+/.test(line)) {
+          html += "<h1>" + inlineMarkdown(line.replace(/^#\s+/, "")) + "</h1>";
+        } else if (line.trim() !== "") {
+          html += "<p>" + inlineMarkdown(line) + "</p>";
+        }
+      });
+
+      if (inList) html += "</ul>";
+      if (inCode) html += "</code></pre>";
+
+      return html;
+    }
+
+    async function loadReleases() {
+      const container = document.getElementById("releaseContent");
+
+      try {
+        const response = await fetch("releases.md", { cache: "no-store" });
+
+        if (!response.ok) {
+          throw new Error("releases.md not found");
+        }
+
+        const markdown = await response.text();
+        container.innerHTML = markdownToHtml(markdown);
+      } catch (error) {
+        container.innerHTML = `
+          <div class="notice">
+            <strong>releases.md</strong> is not available yet. Upload a file named
+            <strong>releases.md</strong> to the root of this GitHub Pages repository and this tab will load it automatically.
+          </div>
+        `;
+      }
+    }
+
+    siteSearch.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      if (!query) return;
+
+      const match = Array.from(panels).find((panel) =>
+        panel.textContent.toLowerCase().includes(query)
+      );
+
+      if (match) {
+        showTab(match.id);
+      }
+    });
+
+    loadReleases();
+  </script>
+</body>
+</html>
