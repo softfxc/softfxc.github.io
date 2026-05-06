@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soft FXC - Emuladores</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    :root {
+      --black: #000000;
+      --pink: #f887ff;
+      --green: #008000;
+      --white: #ffffff;
+      --ink: #1d1d1d;
+      --muted: #777777;
+      --soft-border: #ededed;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      min-height: 102px;
+      background: var(--black);
+      position: relative;
+    }
+
+    nav {
+      width: min(1120px, calc(100% - 40px));
+      min-height: 102px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-brand {
+      color: var(--pink);
+      font-size: 20px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 46px 0 64px;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      color: var(--pink);
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--soft-border);
+      background: #fafafa;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 880px;
+      background: #ffffff;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--soft-border);
+      vertical-align: top;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    th {
+      background: #f7f7f7;
+      color: #202020;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    td a {
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: #a0a0a0;
+      font-size: 12px;
+      background: #ffffff;
+      border-top: 1px solid var(--soft-border);
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 18px 0;
+      }
+
+      .nav-links {
+        gap: 20px;
+        overflow-x: auto;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="nav-brand">Soft FXC</div>
+      <div class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="emulators.html">Emuladores</a>
+        <a href="index.html#piracy">Piracy</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1>Catálogo</h1>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Emulador</th>
+              <th>Plataformas</th>
+              <th>Última versión</th>
+              <th>Fecha</th>
+              <th>Oficial</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RetroArch</td>
+              <td>Windows, macOS, Linux, Android, iOS</td>
+              <td>1.22.2</td>
+              <td>2025-11-20</td>
+              <td><a href="https://www.retroarch.com/" target="_blank" rel="noopener">retroarch.com</a></td>
+            </tr>
+            <tr>
+              <td>PPSSPP</td>
+              <td>Windows, macOS, Linux, Android, iOS</td>
+              <td>1.20.3</td>
+              <td>2026-03-15</td>
+              <td><a href="https://www.ppsspp.org/" target="_blank" rel="noopener">ppsspp.org</a></td>
+            </tr>
+            <tr>
+              <td>Dolphin</td>
+              <td>Windows, macOS, Linux, Android</td>
+              <td>2603a</td>
+              <td>2026-03-17</td>
+              <td><a href="https://dolphin-emu.org/" target="_blank" rel="noopener">dolphin-emu.org</a></td>
+            </tr>
+            <tr>
+              <td>PCSX2</td>
+              <td>Windows, Linux, macOS</td>
+              <td>2.6.3</td>
+              <td>2026-01-28</td>
+              <td><a href="https://pcsx2.net/" target="_blank" rel="noopener">pcsx2.net</a></td>
+            </tr>
+            <tr>
+              <td>RPCS3</td>
+              <td>Windows, Linux, macOS, FreeBSD</td>
+              <td>0.0.40</td>
+              <td>2026-03-03</td>
+              <td><a href="https://rpcs3.net/" target="_blank" rel="noopener">rpcs3.net</a></td>
+            </tr>
+            <tr>
+              <td>MAME</td>
+              <td>Windows, macOS, Linux</td>
+              <td>0.287</td>
+              <td>2026-03-30</td>
+              <td><a href="https://www.mamedev.org/" target="_blank" rel="noopener">mamedev.org</a></td>
+            </tr>
+            <tr>
+              <td>DuckStation</td>
+              <td>Windows, Linux, macOS, Android</td>
+              <td>Last release</td>
+              <td>2026-04-26</td>
+              <td><a href="https://www.duckstation.org/" target="_blank" rel="noopener">duckstation.org</a></td>
+            </tr>
+            <tr>
+              <td>melonDS</td>
+              <td>Windows, Linux, macOS</td>
+              <td>1.1</td>
+              <td>2025-11-18</td>
+              <td><a href="https://melonds.kuribo64.net/" target="_blank" rel="noopener">melonds.kuribo64.net</a></td>
+            </tr>
+            <tr>
+              <td>Flycast</td>
+              <td>Windows, Linux, macOS, Android</td>
+              <td>2.6</td>
+              <td>2026-01-10</td>
+              <td><a href="https://github.com/flyinghead/flycast" target="_blank" rel="noopener">GitHub</a></td>
+            </tr>
+            <tr>
+              <td>Lemuroid</td>
+              <td>Android</td>
+              <td>1.16.2</td>
+              <td>2024-10-22 GitHub / 2025-08-27 F-Droid</td>
+              <td><a href="https://github.com/Swordfish90/Lemuroid" target="_blank" rel="noopener">GitHub</a></td>
+            </tr>
+            <tr>
+              <td>Delta</td>
+              <td>Apple</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://deltaemulator.com/" target="_blank" rel="noopener">deltaemulator.com</a></td>
+            </tr>
+            <tr>
+              <td>UTM</td>
+              <td>Apple</td>
+              <td>5.0.2 beta</td>
+              <td>2026-02-24</td>
+              <td><a href="https://mac.getutm.app/" target="_blank" rel="noopener">mac.getutm.app</a></td>
+            </tr>
+            <tr>
+              <td>xemu</td>
+              <td>Windows, macOS, Linux</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://xemu.app/" target="_blank" rel="noopener">xemu.app</a></td>
+            </tr>
+            <tr>
+              <td>Xenia</td>
+              <td>Windows</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://xenia.jp/" target="_blank" rel="noopener">xenia.jp</a></td>
+            </tr>
+            <tr>
+              <td>ShadPS4</td>
+              <td>Windows, Linux, macOS, FreeBSD</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://shadps4.net/" target="_blank" rel="noopener">shadps4.net</a></td>
+            </tr>
+            <tr>
+              <td>NetherSX2</td>
+              <td>Android</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://github.com/Trixarian/NetherSX2-patch" target="_blank" rel="noopener">GitHub</a></td>
+            </tr>
+            <tr>
+              <td>Vita3K</td>
+              <td>Windows, macOS, Linux, Android</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://vita3k.org/" target="_blank" rel="noopener">vita3k.org</a></td>
+            </tr>
+            <tr>
+              <td>RPCS3-Android</td>
+              <td>Android</td>
+              <td>Alpha-7</td>
+              <td>2025-04-01</td>
+              <td><a href="https://github.com/RPCS3-Android/rpcs3-android" target="_blank" rel="noopener">GitHub</a></td>
+            </tr>
+            <tr>
+              <td>WinDS Pro</td>
+              <td>Windows</td>
+              <td>n/d</td>
+              <td>n/d</td>
+              <td><a href="https://lainz.github.io/windspro/" target="_blank" rel="noopener">lainz.github.io/windspro</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Soft FXC | <a href="https://github.com/softfxc" target="_blank" rel="noopener">GitHub</a> | <a href="https://drive.google.com/drive/folders/1U_-_EgFHsMFZfrq6zqhe_b3j4hiP46up?usp=drive_link" target="_blank" rel="noopener">Mirror</a>
+  </footer>
+</body>
+</html>
