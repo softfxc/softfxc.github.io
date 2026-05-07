@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Soft FXC</title>
+    <link>https://softfxc.github.io/</link>
+    <atom:link href="https://softfxc.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <description>The official Soft FXC site.</description>
+    <language>en</language>
+    <lastBuildDate>Thu, 07 May 2026 15:47:33 GMT</lastBuildDate>
+    <pubDate>Thu, 07 May 2026 15:47:33 GMT</pubDate>
+    <ttl>60</ttl>
+
+    <item>
+      <title>Section branding</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Header branding now changes by section while Flix videos remain embedded.</description>
+      <pubDate>Thu, 07 May 2026 15:47:33 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-section-branding-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>ElsaWin and search</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>ElsaWin Drive access, header branding and Enter search behavior were updated.</description>
+      <pubDate>Thu, 07 May 2026 15:40:14 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-elsawin-search-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Embed layout fixes</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>Drive embeds, search styling and responsive video layout were adjusted.</description>
+      <pubDate>Thu, 07 May 2026 15:03:10 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-embed-layout-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Flix and Piracy</title>
+      <link>https://softfxc.github.io/#flix</link>
+      <description>Flix is now its own section, with The Walking Dead, Stranger Things and Arcane videos.</description>
+      <pubDate>Thu, 07 May 2026 14:48:46 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-flix-piracy-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Releases</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Releases with JDownloader notes, extra links and OffUsFans labels.</description>
+      <pubDate>Wed, 06 May 2026 16:28:54 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-2026-05-06</guid>
+    </item>
+
+    <item>
+      <title>Emulator Catalog</title>
+      <link>https://softfxc.github.io/emulators.html</link>
+      <description>Emulator catalog with official project links.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-emulators-2026-05-05</guid>
+    </item>
+
+    <item>
+      <title>FAQ</title>
+      <link>https://softfxc.github.io/#faq</link>
+      <description>FAQ and comment section.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-faq-2026-05-05</guid>
+    </item>
+  </channel>
+</rss>
