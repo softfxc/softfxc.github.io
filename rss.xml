@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Soft FXC</title>
+    <link>https://softfxc.github.io/</link>
+    <atom:link href="https://softfxc.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <description>The official Soft FXC site.</description>
+    <language>en</language>
+    <lastBuildDate>Thu, 07 May 2026 10:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 07 May 2026 10:00:00 GMT</pubDate>
+    <ttl>60</ttl>
+
+    <item>
+      <title>Releases</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Soft FXC releases with JDownloader notes, extra links and OffUsFans labels.</description>
+      <pubDate>Wed, 06 May 2026 16:28:54 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-2026-05-06</guid>
+    </item>
+
+    <item>
+      <title>Emulator Catalog</title>
+      <link>https://softfxc.github.io/emulators.html</link>
+      <description>Soft FXC emulator catalog with official project links.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-emulators-2026-05-05</guid>
+    </item>
+
+    <item>
+      <title>FAQ</title>
+      <link>https://softfxc.github.io/#faq</link>
+      <description>Soft FXC FAQ and comment section.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-faq-2026-05-05</guid>
+    </item>
+  </channel>
+</rss>
