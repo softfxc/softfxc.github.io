@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Soft FXC</title>
+    <link>https://softfxc.github.io/</link>
+    <atom:link href="https://softfxc.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <description>The official Soft FXC site.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 22 May 2026 17:00:00 GMT</lastBuildDate>
+    <pubDate>Fri, 22 May 2026 17:00:00 GMT</pubDate>
+    <ttl>60</ttl>
+
+    <!-- New entry summarizing the final adjustments made on 22 May 2026 -->
+    <item>
+      <title>Final layout and media adjustments</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The hero banner once again plays the original video.mp4, and a PRAGMATA.JPG image now appears at the start of the Piracy section. DownTV’s local videos and IPTV image are resized to fill the card and stacked vertically. The navigation retains Releases, Piracy and Flix links while the FAQ link and footer have been removed. Comments, subscribe and support boxes remain at the top of the left sidebar. A back-to-top arrow floats at the bottom centre of the page for easier navigation.</description>
+      <pubDate>Fri, 22 May 2026 13:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-final-layout-media-2026-05-22</guid>
+    </item>
+
+    <!-- New entry summarizing additional piracy videos, emulator tutorials and resource links added on 22 May 2026 -->
+    <item>
+      <title>Additional Piracy videos, emulator tutorials and resource links</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The Piracy section now includes new embedded game videos—Thief, Resident&nbsp;Evil&nbsp;8:&nbsp;Village and two Winlator&nbsp;Farming&nbsp;2015 clips—plus a Games compilation and a tutorial on building a FitGirl installer. Magnet links for DAW (Auto‑Tune Unlimited) and the fl‑3713 installer have been added. Under the Emuladores section, two new tutorial videos (“Errores físicos” and “TEU&nbsp;4.0”) appear. The Releases section’s Links article now shows resource links for image background removal, video cutting/compression and text‑to‑speech services in a monospaced block. A music‑note icon at the end of the sidebar opens a Google Drive folder with music.</description>
+      <pubDate>Fri, 22 May 2026 14:30:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-piracy-games-resources-2026-05-22</guid>
+    </item>
+
+    <!-- New entry summarizing final polish on 22 May 2026 -->
+    <item>
+      <title>Piracy polish: hashtags removed, audio control restored, clickable images</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The Piracy section has been refined: outdated hashtags have been removed; missing carousel text for DownTV and Hydra now appears in white for better readability; the hero banner once again includes an audio toggle button to mute or unmute the video; all images in release cards are clickable, opening in a new tab at full size, while images and embedded videos scale to fill their cards without cropping; and DAW magnet links are now labelled simply as “A” and “B.”</description>
+      <pubDate>Fri, 22 May 2026 17:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-piracy-polish-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Section branding</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Header branding now changes by section while Flix videos remain embedded.</description>
+      <pubDate>Thu, 07 May 2026 15:47:33 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-section-branding-2026-05-07</guid>
+    </item>
+    <item>
+      <title>Wynemo update and multimedia changes</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>The Releases section now includes a Wynemo article with details about the updated launcher. In the Piracy section, DownTV uses local videos 1.mp4 and 2.mp4 with an IPTV image; ElsaWin installation features two images; the hero video is replaced by PRAGMATA.JPG; Nympo release now includes a screenshot; and a torrent.mp4 video was added.</description>
+      <pubDate>Fri, 22 May 2026 10:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-wynemo-update-2026-05-22</guid>
+    </item>
+    <item>
+      <title>CompactGUI release and header redesign</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>A new CompactGUI link was added to the Releases section. The header now displays the tagline “The ONLY official site for Soft FXC” on the left with Releases, Piracy and FAQ navigation links and the search button aligned on the right. The sidebar has been moved to the left and colours have been inverted compared to the reference screenshot, and the footer year has been removed.</description>
+      <pubDate>Fri, 22 May 2026 11:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-compactgui-header-redesign-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Dark header, Flix nav and DownTV media fixes</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The top bar is now black with white text and includes Releases, Piracy and Flix tabs. The FAQ link has been removed and the sidebar content (subscribe, comments and support) stays at the top of the left column. A back-to-top arrow appears when scrolling. DownTV’s local videos and IPTV image are displayed in a separate card beneath the description instead of alongside it. The Alldata installation replaces the ElsaWin installation in Piracy and PRAGMATA.jpg and the hero banner display correctly. The footer has been removed.</description>
+      <pubDate>Fri, 22 May 2026 12:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-darkheader-flix-down-media-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>ElsaWin and search</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>ElsaWin Drive access, header branding and Enter search behavior were updated.</description>
+      <pubDate>Thu, 07 May 2026 15:40:14 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-elsawin-search-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Embed layout fixes</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>Drive embeds, search styling and responsive video layout were adjusted.</description>
+      <pubDate>Thu, 07 May 2026 15:03:10 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-embed-layout-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Flix and Piracy</title>
+      <link>https://softfxc.github.io/#flix</link>
+      <description>Flix is now its own section, with The Walking Dead, Stranger Things and Arcane videos.</description>
+      <pubDate>Thu, 07 May 2026 14:48:46 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-flix-piracy-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Releases</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Releases with JDownloader notes, extra links and OffUsFans labels.</description>
+      <pubDate>Wed, 06 May 2026 16:28:54 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-2026-05-06</guid>
+    </item>
+
+    <item>
+      <title>Emulator Catalog</title>
+      <link>https://softfxc.github.io/emulators.html</link>
+      <description>Emulator catalog with official project links.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-emulators-2026-05-05</guid>
+    </item>
+
+    <item>
+      <title>FAQ</title>
+      <link>https://softfxc.github.io/#faq</link>
+      <description>FAQ and comment section.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-faq-2026-05-05</guid>
+    </item>
+  </channel>
+</rss>
