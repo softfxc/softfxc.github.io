@@ -14,14 +14,6 @@ Hydra es una adaptación para Android de Hydra Launcher. El código conserva el 
 
 DownTV es una aplicación Android de catálogo y reproducción multimedia.
 
-## CCleaner
-
-CCleaner es una aplicación para Windows escrita en C + +. Ejecuta tareas ordenadas: limpieza de carpetas temporales del usuario, caché DNS, caché del Explorador y GPU, CrashDumps, Windows Error Reporting, Delivery Optimization, descargas de Windows Update, logs de Windows, caché de navegador, carpetas residuales antiguas, papelera, portapapeles y herramientas integradas como Cleanmgr y DISM.
-
-## Tonchán
-
-Tonchan es un visor PDF nativo para Windows con OCR y búsqueda visual. 
-
 ## Coqui TTS
 
 XTTS es una aplicación de síntesis de voz basada en Coqui y Gradio.
