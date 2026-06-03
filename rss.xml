@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Software FXC</title>
+    <link>https://softfxc.github.io/</link>
+    <atom:link href="https://softfxc.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>The ONLY official Software FXC site.</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 02 Jun 2026 13:00:00 GMT</lastBuildDate>
+    <pubDate>Tue, 02 Jun 2026 13:00:00 GMT</pubDate>
+    <ttl>60</ttl>
+
+    <item>
+      <title>Reddit Hypervisor Text</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The Piracy section now includes a Reddit reading block.</description>
+      <pubDate>Fri, 22 May 2026 18:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-reddit-hypervisor-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Releases Cleanup Navigation</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Search results now keep dark-blue highlights and can be navigated with the arrow keys.</description>
+      <pubDate>Fri, 22 May 2026 17:45:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-search-navigation-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Releases, Search and Mobile Text Polish</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>The Releases section now labels emulator links as Emuladores and removes duplicates.</description>
+      <pubDate>Fri, 22 May 2026 17:30:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-search-text-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Piracy Polish: Hashtags, Audio Control Restored, Clickable Images</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The Piracy section has been refined with hashtag improvements, restored audio controls and clickable images.</description>
+      <pubDate>Fri, 22 May 2026 17:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-polish-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Additional Content</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>Two new tutorial videos were added under the Emuladores section.</description>
+      <pubDate>Fri, 22 May 2026 14:30:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-resources-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Final Layout and Media Adjustments</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The navigation retains Releases, Piracy and Flix links while the FAQ link and footer have been removed. Comments, subscribe and support boxes remain at the top of the left sidebar. A back-to-top arrow floats at the bottom centre of the page for easier navigation.</description>
+      <pubDate>Fri, 22 May 2026 13:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-final-layout-media-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Dark Header, Flix Nav and Media Fixes</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>The top bar is now black with white text and includes Releases, Piracy and Flix tabs. The sidebar content, including subscribe, comments and support, stays at the top of the left column. A back-to-top arrow appears when scrolling.</description>
+      <pubDate>Fri, 22 May 2026 12:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-darkheader-media-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Header Redesign</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>A new link was added to the Releases section. The header now displays the tagline “The ONLY official site for Software FXC” on the left, with Releases, Piracy and FAQ navigation links and the search button aligned on the right.</description>
+      <pubDate>Fri, 22 May 2026 11:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-compactgui-header-redesign-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Multimedia Changes</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>The latest release now includes a screenshot, and a video has been added.</description>
+      <pubDate>Fri, 22 May 2026 10:00:00 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-update-2026-05-22</guid>
+    </item>
+
+    <item>
+      <title>Section Branding</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>Header branding now changes by section while Flix videos remain embedded.</description>
+      <pubDate>Thu, 07 May 2026 15:47:33 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-section-branding-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Search</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>Header and Enter-key search behavior were updated.</description>
+      <pubDate>Thu, 07 May 2026 15:40:14 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-search-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Embed Layout Fixes</title>
+      <link>https://softfxc.github.io/#piracy</link>
+      <description>Drive embeds, search styling and responsive video layout were adjusted.</description>
+      <pubDate>Thu, 07 May 2026 15:03:10 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-embed-layout-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Flix and Piracy</title>
+      <link>https://softfxc.github.io/#flix</link>
+      <description>Flix is now its own section, with fandom videos.</description>
+      <pubDate>Thu, 07 May 2026 14:48:46 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-flix-piracy-2026-05-07</guid>
+    </item>
+
+    <item>
+      <title>Releases</title>
+      <link>https://softfxc.github.io/#releases</link>
+      <description>The Releases section now includes download notes, extra links and updated labels.</description>
+      <pubDate>Wed, 06 May 2026 16:28:54 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-releases-2026-05-06</guid>
+    </item>
+
+    <item>
+      <title>Emulator Catalog</title>
+      <link>https://softfxc.github.io/emulators.html</link>
+      <description>The emulator catalog now includes official project links.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-emulators-2026-05-05</guid>
+    </item>
+
+    <item>
+      <title>FAQ</title>
+      <link>https://softfxc.github.io/#faq</link>
+      <description>The FAQ and comment section were added.</description>
+      <pubDate>Tue, 05 May 2026 15:37:29 GMT</pubDate>
+      <guid isPermaLink="false">softfxc-faq-2026-05-05</guid>
+    </item>
+
+  </channel>
+</rss>
