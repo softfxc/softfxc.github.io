@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Soft FXC</title>
+  <meta name="description" content="The official Soft FXC site." />
+  <meta name="google" content="notranslate" />
+
+  <link rel="icon" type="image/png" href="favicon.png" sizes="32x32" />
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="alternate" type="application/rss+xml" title="Soft FXC RSS" href="https://softfxc.github.io/rss.xml" />
+
+  <style>
+    :root {
+      --black: #000000;
+      --pink: #f887ff;
+      --green: #008000;
+      --green-light: #8dff9a;
+      --white: #ffffff;
+      --page: #ffffff;
+      --ink: #1d1d1d;
+      --muted: #8a8a8a;
+      --soft-border: #ededed;
+      --glass: rgba(0, 0, 0, 0.42);
+      --glass-strong: rgba(0, 0, 0, 0.58);
+      --glass-line: rgba(255, 255, 255, 0.18);
+      --header-height: 64px;
+      --sidebar-width: 360px;
+      --site-font-size: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-header {
+      /* Dark header bar matching official site style */
+      height: var(--header-height);
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .brand {
+      color: var(--pink);
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      margin-right: 12px;
+      white-space: nowrap;
+    }
+
+    .sidebar-toggle {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--white);
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .sidebar-toggle:hover {
+      color: var(--pink);
+    }
+
+    .sidebar-toggle .toggle-bars {
+      width: 20px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .sidebar-toggle .toggle-bars span {
+      height: 2px;
+      width: 100%;
+      background: currentColor;
+      border-radius: 999px;
+      display: block;
+    }
+
+    .header-tabs {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-left: auto;
+    }
+
+    .header-tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      /* Navigation tabs use white text on dark header */
+      color: var(--white);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0;
+      padding: 6px 0;
+      transition: color 0.18s ease;
+    }
+
+    .header-tab:hover,
+    .header-tab.active {
+      color: var(--white);
+    }
+
+    /* Header helper classes */
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      line-height: 1;
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* Standalone header links such as the FAQ anchor */
+    .header-link {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0;
+      padding: 6px 0;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .header-link:hover {
+      color: var(--ink);
+    }
+
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      margin-left: 24px;
+    }
+
+    .search-button {
+      width: 58px;
+      height: 58px;
+      border: 0;
+      background: var(--green);
+      color: #8b8b8b;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      filter: brightness(1.08);
+    }
+
+    .search-button svg,
+    .video-audio svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .search-popover {
+      width: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: width 0.18s ease, opacity 0.18s ease;
+    }
+
+    .search-popover.active {
+      width: min(240px, calc(100vw - 82px));
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .search-popover input {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #cfcfcf;
+      outline: 0;
+      padding: 12px 2px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .search-popover input::placeholder {
+      color: #858585;
+    }
+
+    .search-popover input::-webkit-search-cancel-button,
+    .search-popover input::-webkit-search-decoration,
+    .search-popover input::-webkit-search-results-button,
+    .search-popover input::-webkit-search-results-decoration {
+      appearance: none;
+      -webkit-appearance: none;
+      display: none;
+    }
+
+    .search-popover input::-ms-clear,
+    .search-popover input::-ms-reveal {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .layout {
+      /* Adjust layout to place the sidebar on the left */
+      min-height: calc(100vh - var(--header-height));
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      background: #ffffff;
+      transition: grid-template-columns 0.22s ease;
+    }
+
+    body.sidebar-collapsed {
+      --sidebar-width: 0px;
+    }
+
+    body.sidebar-collapsed .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .center-area {
+      min-width: 0;
+      overflow: hidden;
+      background: #060606;
+      min-height: 620px;
+      padding: 0 26px 58px;
+      isolation: isolate;
+      /* Ensure the main content sits in the second column when the sidebar is on the left */
+      grid-column: 2;
+      /* Ensure the main area occupies the first row so sidebar appears aligned at top */
+      grid-row: 1;
+    }
+
+    .video-stage {
+      position: relative;
+      width: min(960px, 100%);
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .bg-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #000000;
+    }
+
+    .video-audio {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.56);
+      color: #b8b8b8;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .video-audio:hover {
+      color: #ffffff;
+    }
+
+    .video-audio .audio-on {
+      display: none;
+    }
+
+    .video-audio.unmuted .audio-on {
+      display: block;
+    }
+
+    .video-audio.unmuted .audio-off {
+      display: none;
+    }
+
+    .central-ui {
+      width: min(760px, 100%);
+      margin: 26px auto 0;
+      background: var(--glass);
+      border: 0;
+      border-radius: 15px;
+      color: #ffffff;
+      padding: 21px 23px;
+      box-shadow: none;
+      backdrop-filter: blur(4px);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel h1,
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+      color: var(--pink);
+      line-height: 1.15;
+    }
+
+    .central-ui > .panel > h2 {
+      display: none;
+    }
+
+    .panel p,
+    .panel li {
+      color: #f1f1f1;
+      line-height: 1.58;
+      font-size: 14px;
+    }
+
+    .panel a {
+      color: var(--pink);
+    }
+
+    .forum-box {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--glass-line);
+    }
+
+    .sidebar-faq {
+      max-width: 330px;
+      margin: 0 auto 18px;
+      padding: 13px;
+      border: 1px solid var(--soft-border);
+      background: #fafafa;
+      color: #202020;
+    }
+
+    .sidebar-faq h3 {
+      margin: 0 0 10px;
+      color: var(--pink);
+      font-size: 17px;
+      line-height: 1.1;
+    }
+
+    .sidebar-faq .forum-box {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .releases-empty {
+      min-height: 96px;
+      margin-bottom: 18px;
+    }
+
+    .release-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .release-card {
+      display: grid;
+      gap: 10px;
+      background: var(--glass-strong);
+      border: 0;
+      border-radius: 13px;
+      padding: 14px;
+      color: #ffffff;
+      min-width: 0;
+    }
+
+    .release-card > * {
+      min-width: 0;
+    }
+
+    .release-card.with-image {
+      grid-template-columns: 180px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .release-card img {
+      /* Display images at their natural height without cropping */
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #000000;
+      display: block;
+    }
+
+    /* Ensure embedded videos and iframes fill their container without cropping */
+    .release-card iframe,
+    .release-card video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .release-title {
+      display: block;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .release-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .official-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .resource-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .source-section {
+      display: grid;
+      gap: 12px;
+    }
+
+    .source-section h3 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 17px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      padding: 0;
+      color: #f1f1f1;
+    }
+
+    .source-list a {
+      font-weight: 900;
+    }
+
+    .windows-images {
+      display: grid;
+      gap: 14px;
+    }
+
+    .windows-shot {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+    }
+
+    .windows-shot a,
+    .windows-shot img {
+      display: block;
+    }
+
+    .windows-shot img {
+      width: 100%;
+      height: auto;
+      max-height: 360px;
+      object-fit: contain;
+      background: #000000;
+    }
+
+    .windows-shot figcaption {
+      display: grid;
+      gap: 5px;
+      color: #f1f1f1;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .windows-shot strong {
+      color: #ffffff;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tag-list span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .search-highlight {
+      background: #092554;
+      color: #ffffff;
+      padding: 1px 3px;
+      border-radius: 3px;
+      text-decoration: none;
+    }
+
+    .search-highlight.active-search-highlight {
+      background: #155ed1;
+      outline: 2px solid rgba(255, 255, 255, 0.55);
+    }
+
+    .media-grid,
+    .piracy-extra-links {
+      display: grid;
+      gap: 14px;
+    }
+
+    .media-card {
+      display: grid;
+      gap: 10px;
+    }
+
+  /* Ensure media within media-cards (videos and images) spans the full width of the card
+     and stacks vertically. Without this, the items may appear side‑by‑side or with incorrect
+     sizing, as reported by the user. */
+  .media-card video,
+  .media-card img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+    .media-title {
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+
+
+    .handwritten-note {
+      margin: 16px 0 22px;
+      color: #ffffff;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      font-size: 30px;
+      line-height: 1.45;
+      text-align: center;
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: 0.3px;
+      text-wrap: balance;
+    }
+
+    .video-tags {
+      margin: -6px 0 12px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .card iframe,
+    .media-card iframe,
+    .piracy-extra-links iframe {
+      width: 100%;
+      max-width: 100%;
+      height: clamp(300px, 56.25vw, 520px);
+      border: 0;
+      display: block;
+      background: #000000;
+    }
+
+    .release-note {
+      max-height: none;
+      overflow: visible;
+      margin: 8px 0 0;
+      white-space: pre-wrap;
+      color: #f1f1f1;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .program-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .program-list .release-card {
+      min-height: 48px;
+      align-content: center;
+    }
+
+    .program-list a.release-title {
+      color: #ffffff;
+    }
+
+    .card {
+      background: var(--glass-strong);
+      border: 0;
+      border-radius: 13px;
+      padding: 15px;
+      color: #ffffff;
+    }
+
+    .card-title {
+      display: block;
+      margin-bottom: 7px;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .reddit-card {
+      gap: 18px;
+      padding: clamp(18px, 4vw, 32px);
+    }
+
+    .reddit-card h3 {
+      margin: 0;
+      color: var(--pink);
+      font-weight: 900;
+    }
+
+    .reddit-meta {
+      display: grid;
+      gap: 5px;
+      color: #f1f1f1;
+      line-height: 1.55;
+    }
+
+    .reddit-meta strong {
+      color: #ffffff;
+    }
+
+    .reddit-thread {
+      display: grid;
+      gap: 18px;
+      margin: 0;
+      padding: 0 clamp(14px, 3vw, 28px);
+      color: #f1f1f1;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .reddit-thread p {
+      margin: 0;
+    }
+
+    .reddit-thread .reddit-section-title {
+      color: var(--pink);
+      font-weight: 900;
+    }
+
+    .card p {
+      margin: 7px 0;
+    }
+
+    .card a,
+    .text-slide {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .yt-preview {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      border-radius: 15px;
+      background: #000000;
+      border: 0;
+      aspect-ratio: 16 / 9;
+      cursor: pointer;
+      margin-bottom: 16px;
+      padding: 0;
+    }
+
+    .yt-preview img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      object-fit: cover;
+    }
+
+    .yt-extra-embed {
+      display: block;
+      width: 101%;
+      max-width: 101%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border: 0;
+      border-radius: 15px;
+      background: #000000;
+      margin: 0 0 16px -0.5%;
+    }
+
+    .play-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 74px;
+      height: 52px;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.34);
+    }
+
+    .play-badge svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }
+
+    .blogger-card {
+      --surface: #0a0a0a;
+      --surface2: #141414;
+      --accent: #00e4a5;
+      --accent2: #00c6ff;
+      --text: #e0e0e0;
+      --radius: 18px;
+      --radius-sm: 10px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      width: 100%;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      border: 0;
+      display: flex;
+      flex-direction: column;
+      margin: 20px auto;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .blogger-card .card-header,
+    .hydra-card .card-header {
+      padding: 28px 36px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--surface);
+    }
+
+    .blogger-card .card-header img,
+    .hydra-card .card-header img {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 6px 20px rgba(0, 228, 165, 0.25);
+    }
+
+    .blogger-card .brand-name,
+    .hydra-card .brand-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .blogger-card .card-content {
+      display: flex;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .text-panel {
+      flex: 1 1 55%;
+      min-width: 320px;
+      max-width: 100%;
+      padding: 32px 36px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--surface);
+      font-family: var(--font);
+    }
+
+    .carousel-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .arrow-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .arrow-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .text-carousel-container {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      min-height: 220px;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 24px 22px;
+      border: 0;
+      overflow: hidden;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .text-slide {
+      position: absolute;
+      top: 24px;
+      left: 22px;
+      right: 22px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      /* Ensure carousel text remains visible on dark backgrounds */
+      color: var(--white);
+    }
+
+    .text-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+    }
+
+    .text-slide.exit-up {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    .buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 8px;
+      max-width: 100%;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+      font-family: var(--font);
+    }
+
+    .btn-download {
+      background: var(--accent);
+      color: #0a0a0f;
+    }
+
+    .btn-source {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-github {
+      background: #24292e;
+      color: #fff;
+      border: 2px solid #444d56;
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .video-panel {
+      flex: 1 1 45%;
+      min-width: 260px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .video-sticky-wrapper {
+      position: sticky;
+      top: 20px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
+      border: 0;
+      aspect-ratio: 9 / 16;
+      background: #000;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .hydra-card {
+      --surface: #111a2c;
+      --surface2: #1a2438;
+      --accent: #00e4a5;
+      --accent2: #00c6ff;
+      --text: #e0e0e0;
+      --radius: 18px;
+      --radius-sm: 10px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      width: 100%;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      border: 0;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right-sidebar {
+      background: #ffffff;
+      /* Border on the right since this sidebar sits on the left */
+      border-right: 1px solid var(--soft-border);
+      padding: 28px 14px 36px;
+      color: #1f1f1f;
+      z-index: 2;
+      min-width: 0;
+      overflow: hidden auto;
+      transition: opacity 0.2s ease, padding 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      /* Place the sidebar in the first column of the grid */
+      grid-column: 1;
+      /* Keep the sidebar on the first row of the grid */
+      grid-row: 1;
+    }
+
+    .right-sidebar > * {
+      min-width: 300px;
+      transition: visibility 0.2s ease;
+    }
+
+    body.sidebar-collapsed .right-sidebar {
+      display: none;
+      border-right-color: transparent;
+      opacity: 0;
+      padding-left: 0;
+      padding-right: 0;
+      pointer-events: none;
+    }
+
+    body.sidebar-collapsed .center-area {
+      grid-column: 1;
+    }
+
+    body.sidebar-collapsed .right-sidebar > * {
+      visibility: hidden;
+    }
+
+    .profile-card {
+      text-align: center;
+      margin: 0 auto 18px;
+    }
+
+    .profile-card img {
+      width: 154px;
+      height: 154px;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 10px;
+      background: #f2f2f2;
+      border-radius: 2px;
+    }
+
+    .support-text {
+      margin: 0;
+      color: #777777;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .rss-box {
+      margin: 0 auto 18px;
+      padding: 13px;
+      border: 1px solid var(--soft-border);
+      background: #fafafa;
+      max-width: 240px;
+    }
+
+    .rss-box h3 {
+      margin: 0 0 9px;
+      font-size: 13px;
+      line-height: 1.25;
+      color: #202020;
+    }
+
+    .rss-form {
+      display: grid;
+      gap: 8px;
+    }
+
+    .rss-form input {
+      width: 100%;
+      border: 1px solid #dddddd;
+      border-radius: 3px;
+      padding: 9px 10px;
+      font-size: 13px;
+      outline: 0;
+    }
+
+    .rss-form button,
+    .rss-link {
+      border: 0;
+      background: var(--green);
+      color: #ffffff;
+      padding: 9px 10px;
+      border-radius: 3px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .rss-link {
+      display: block;
+      margin-top: 8px;
+      background: #111111;
+    }
+
+    .views-box {
+      margin: 0 auto 18px;
+      padding: 13px;
+      border: 1px solid var(--soft-border);
+      background: #fafafa;
+      max-width: 240px;
+      text-align: center;
+      color: #202020;
+    }
+
+    .views-box h3 {
+      margin: 0 0 8px;
+      color: var(--pink);
+      font-size: 17px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .views-number {
+      display: block;
+      color: #111111;
+      font-weight: 900;
+      font-size: 24px !important;
+      line-height: 1.1;
+    }
+
+
+    .footer {
+      grid-column: 1 / -1;
+      padding: 20px;
+      text-align: center;
+      color: #a0a0a0;
+      font-size: 12px;
+      background: #ffffff;
+      border-top: 1px solid var(--soft-border);
+    }
+
+    /* Button to return to the top of the page. It remains hidden until the user scrolls down. */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #111111;
+      border: 0;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+      transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease;
+    }
+
+    .back-to-top:hover {
+      transform: translateX(-50%) translateY(-2px);
+      background: var(--pink);
+      color: #000000;
+    }
+
+    /* Monospaced block used in the Links section to present resource URLs. */
+    .monospace-block {
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      background: var(--soft-border);
+      color: var(--ink);
+      padding: 12px;
+      border: 1px solid var(--soft-border);
+      border-radius: 4px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+/* Show the audio toggle button on the hero banner */
+    /* Previously the .video-audio rule hid the button; remove this so it remains visible. */
+
+    @media (max-width: 900px) {
+      :root {
+        --sidebar-width: 300px;
+      }
+
+      .layout {
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      }
+
+      .right-sidebar {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .profile-card img {
+        width: 132px;
+        height: 132px;
+      }
+
+      .central-ui {
+        padding: 18px;
+      }
+
+      .release-card.with-image {
+        grid-template-columns: 150px minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      :root {
+        --header-height: 104px;
+        --sidebar-width: min(320px, 88vw);
+      }
+
+      .site-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          "brand search"
+          "tabs tabs";
+        align-content: center;
+        gap: 8px 10px;
+        padding: 8px 10px;
+      }
+
+      .header-left {
+        grid-area: brand;
+        min-width: 0;
+        gap: 8px;
+      }
+
+      .header-tabs {
+        grid-area: tabs;
+        margin-left: 0;
+        transform: none;
+        justify-content: flex-start;
+        gap: 14px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .brand {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: 0;
+      }
+
+      .tagline {
+        display: none;
+      }
+
+      .search-wrap {
+        grid-area: search;
+        justify-self: end;
+        margin-left: 0;
+        position: relative;
+      }
+
+      .search-button {
+        width: 42px;
+        height: 42px;
+      }
+
+      .search-popover {
+        position: absolute;
+        top: 50%;
+        right: 48px;
+        transform: translateY(-50%);
+        background: var(--black);
+      }
+
+      .search-popover.active {
+        width: min(210px, calc(100vw - 72px));
+      }
+
+      .layout {
+        display: block;
+        min-height: calc(100vh - var(--header-height));
+      }
+
+      .center-area {
+        min-height: 560px;
+        padding: 0 10px 36px;
+        overflow: visible;
+      }
+
+      .video-stage {
+        aspect-ratio: 16 / 9;
+        width: calc(100% + 20px);
+        margin-left: -10px;
+        margin-right: -10px;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .central-ui {
+        margin-top: 14px;
+        padding: 14px 12px;
+        border-radius: 8px;
+      }
+
+      .right-sidebar {
+        position: fixed;
+        top: var(--header-height);
+        bottom: 0;
+        left: 0;
+        width: var(--sidebar-width);
+        max-width: 88vw;
+        padding: 18px 12px 28px;
+        border-top: 0;
+        border-right: 1px solid var(--soft-border);
+        box-shadow: 18px 0 34px rgba(0, 0, 0, 0.28);
+        transform: translateX(0);
+        z-index: 18;
+      }
+
+      .right-sidebar > * {
+        min-width: 0;
+      }
+
+      body.sidebar-collapsed .right-sidebar {
+        opacity: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+        transform: translateX(-105%);
+      }
+
+      .official-links,
+      .release-card.with-image {
+        grid-template-columns: 1fr;
+      }
+
+      .windows-images {
+        grid-template-columns: 1fr;
+      }
+
+      .program-list {
+        grid-template-columns: 1fr;
+      }
+
+      .release-card img {
+        /* Let images maintain natural dimensions on smaller screens */
+        height: auto;
+      }
+
+      .blogger-card .card-header,
+      .hydra-card .card-header {
+        padding: 20px 18px 12px;
+      }
+
+      .blogger-card .card-header img,
+      .hydra-card .card-header img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .blogger-card .card-content {
+        flex-direction: column-reverse;
+      }
+
+      .text-panel {
+        min-width: 0;
+        width: 100%;
+        padding: 24px 18px 28px;
+      }
+
+      .video-panel {
+        border-left: none;
+        padding: 16px;
+      }
+
+      .arrow-btn {
+        width: 36px;
+        height: 36px;
+      }
+
+      .btn {
+        padding: 11px 18px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .header-tabs {
+        gap: 12px;
+        justify-content: flex-start;
+      }
+
+      .header-tab {
+        font-size: 11px;
+      }
+
+      .search-popover.active {
+        width: min(190px, calc(100vw - 66px));
+      }
+    }
+
+    body,
+    body * {
+      font-size: var(--site-font-size) !important;
+    }
+  </style>
+</head>
+
+<body translate="no" class="notranslate">
+  <header class="site-header">
+    <div class="header-left">
+      <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Hide sidebar" aria-controls="siteSidebar" aria-expanded="true">
+        <span class="toggle-bars" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <span class="brand">Soft FXC</span>
+      <span class="tagline">The ONLY official site for Soft FXC</span>
+    </div>
+
+    <nav class="header-tabs" aria-label="Site navigation">
+      <button class="header-tab active" type="button" data-tab="releases">Releases</button>
+      <button class="header-tab" type="button" data-tab="piracy">Piracy</button>
+      <button class="header-tab" type="button" data-tab="flix">Flix</button>
+    </nav>
+
+    <div class="search-wrap">
+      <div class="search-popover" id="searchPopover">
+            <input id="siteSearch" type="search" placeholder="Search..." aria-label="Search" autocomplete="off" enterkeyhint="next" />
+      </div>
+      <button class="search-button" type="button" id="searchToggle" aria-label="Search">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.35-4.35" />
+          <circle cx="10.5" cy="10.5" r="6.5" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="center-area">
+      <section class="video-stage" aria-label="Soft FXC video">
+        <!-- Restore the original hero video; include an audio control button -->
+        <video class="bg-video" id="heroVideo" autoplay muted loop playsinline preload="auto">
+          <!-- Use the repository-local video so it works on GitHub Pages and local previews. -->
+          <source src="video.mp4" type="video/mp4" />
+        </video>
+        <!-- Audio toggle button: click to mute/unmute the hero video. The icons change based on state -->
+        <button class="video-audio" id="videoAudio" aria-label="Unmute video">
+          <span class="audio-on">🔊</span>
+          <span class="audio-off">🔇</span>
+        </button>
+      </section>
+
+      <section class="central-ui">
+        <article id="releases" class="panel active">
+          <h2>Releases</h2>
+          <div class="releases-empty"></div>
+
+          <div class="release-grid">
+            <!-- Removed Wynemo release card as requested -->
+            <article class="release-card with-image">
+              <a href="FXC%20Repacker.PNG" target="_blank" rel="noopener">
+                <img src="FXC%20Repacker.PNG" alt="FXC Repacker" />
+              </a>
+              <div>
+                <span class="release-title">FXC Repacker</span>
+                <div class="release-links">
+                  <a href="https://drive.google.com/drive/folders/1U_-_EgFHsMFZfrq6zqhe_b3j4hiP46up?usp=drive_link" target="_blank" rel="noopener">Drive</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="release-card with-image">
+              <a href="UHD%20Downloader.PNG" target="_blank" rel="noopener">
+                <img src="UHD%20Downloader.PNG" alt="UHD Downloader" />
+              </a>
+              <div>
+                <span class="release-title">UHD Downloader</span>
+                <div class="release-links">
+                  <a href="https://drive.google.com/drive/folders/1U_-_EgFHsMFZfrq6zqhe_b3j4hiP46up?usp=drive_link" target="_blank" rel="noopener">Drive</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="release-card with-image">
+              <a href="IMG1-PS2.jpg" target="_blank" rel="noopener">
+                <img src="IMG1-PS2.jpg" alt="IMG1 PS2" />
+              </a>
+              <div>
+                <span class="release-title">PCSX2</span>
+                <div class="release-links">
+                  <a href="https://pcsx2.net/" target="_blank" rel="noopener">Official</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="release-card with-image">
+              <a href="rpcs3.jpg" target="_blank" rel="noopener">
+                <img src="rpcs3.jpg" alt="RPCS3" />
+              </a>
+              <div>
+                <span class="release-title">RPCS3</span>
+                <div class="release-links">
+                  <a href="https://rpcs3.net/" target="_blank" rel="noopener">Official</a>
+                  <a href="https://github.com/RPCS3-Android/rpcs3-android" target="_blank" rel="noopener">RPCS3-Android GitHub</a>
+                </div>
+              </div>
+            </article>
+
+            <div class="program-list">
+              <article class="release-card with-image">
+                <a href="Screenshot.jpg" target="_blank" rel="noopener">
+                  <img src="Screenshot.jpg" alt="Nympo Screenshot" />
+                </a>
+                <div>
+                  <a class="release-title" href="https://github.com/softfxc/nympo" target="_blank" rel="noopener">Nympo</a>
+                </div>
+              </article>
+              <!-- Removed Wynemo entry from program list as requested -->
+              <article class="release-card">
+                <a class="release-title" href="https://github.com/hydralauncher/hydra" target="_blank" rel="noopener">Hydra</a>
+              </article>
+              <!-- Removed Windows cleanup utility image card as requested -->
+              <article class="release-card with-image">
+                <a href="https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe" target="_blank" rel="noopener">
+                  <img src="582981502-2918d09e-6415-491b-a79f-f035881b9be1.png" alt="OCR" />
+                  <span class="release-title">OCR</span>
+                </a>
+              </article>
+              <!-- Removed Coqui TTS card as requested -->
+              <article class="release-card">
+                <a class="release-title" href="https://github.com/softfxc/fitgirl" target="_blank" rel="noopener">FitGirl-Repack Installer</a>
+              </article>
+              <article class="release-card">
+                <a class="release-title" href="https://github.com/softfxc/3d" target="_blank" rel="noopener">Render 3D</a>
+              </article>
+            </div>
+
+            <article class="release-card">
+              <span class="release-title">Emuladores</span>
+              <ul class="official-links">
+                <li><a href="https://www.retroarch.com/" target="_blank" rel="noopener">RetroArch</a></li>
+                <li><a href="https://www.ppsspp.org/" target="_blank" rel="noopener">PPSSPP</a></li>
+                <li><a href="https://dolphin-emu.org/" target="_blank" rel="noopener">Dolphin</a></li>
+                <li><a href="https://pcsx2.net/" target="_blank" rel="noopener">PCSX2</a></li>
+                <li><a href="https://rpcs3.net/" target="_blank" rel="noopener">RPCS3</a></li>
+                <li><a href="https://www.mamedev.org/" target="_blank" rel="noopener">MAME</a></li>
+                <li><a href="https://www.duckstation.org/" target="_blank" rel="noopener">DuckStation</a></li>
+                <li><a href="https://melonds.kuribo64.net/" target="_blank" rel="noopener">melonDS</a></li>
+                <li><a href="https://github.com/flyinghead/flycast" target="_blank" rel="noopener">Flycast</a></li>
+                <li><a href="https://github.com/Swordfish90/Lemuroid" target="_blank" rel="noopener">Lemuroid</a></li>
+                <li><a href="https://deltaemulator.com/" target="_blank" rel="noopener">Delta</a></li>
+                <li><a href="https://mac.getutm.app/" target="_blank" rel="noopener">UTM</a></li>
+                <li><a href="https://xemu.app/" target="_blank" rel="noopener">xemu</a></li>
+                <li><a href="https://xenia.jp/" target="_blank" rel="noopener">Xenia</a></li>
+                <li><a href="https://shadps4.net/" target="_blank" rel="noopener">ShadPS4</a></li>
+                <li><a href="https://github.com/Trixarian/NetherSX2-patch" target="_blank" rel="noopener">NetherSX2</a></li>
+                <li><a href="https://vita3k.org/" target="_blank" rel="noopener">Vita3K</a></li>
+                <li><a href="https://github.com/RPCS3-Android/rpcs3-android" target="_blank" rel="noopener">RPCS3-Android</a></li>
+                <li><a href="https://windsprocentral.blogspot.com/" target="_blank" rel="noopener">WinDS Pro</a></li>
+                <li><a href="https://github.com/brunodev85/winlator/releases" target="_blank" rel="noopener">Winlator</a></li>
+              </ul>
+            </article>
+
+
+            <article class="release-card source-section">
+              <p><strong>[ESPAÑOL]</strong></p>
+              <p>En julio de 2017, Avast compró Piriform, la empresa creadora de CCleaner, y anunció que mantendría la marca. Poco después salió a la luz el episodio más grave: el incidente de seguridad de 2017. Según Cisco Talos, la versión maliciosa de CCleaner 5.33 estuvo disponible para descarga entre el 15 de agosto y el 12 de septiembre de 2017, y quien la descargó o actualizó durante ese periodo quedó infectado. Talos notificó a Avast el 13 de septiembre de 2017. Más tarde, Avast explicó que los atacantes ya habían comprometido la red de Piriform antes de la compra, y que el acceso inicial a la red se remonta al 11 de marzo de 2017, usando TeamViewer en una estación de trabajo de un desarrollador. Avast también indicó que el código malicioso llegó al entorno de compilación de Piriform en algún momento entre el 11 de marzo y el 4 de julio de 2017, o sea, antes de que Avast cerrara la adquisición el 18 de julio de 2017. Ese ataque no fue un simple “adware” ni una travesura menor: Avast dijo que el instalador alterado fue descargado por 2,27 millones de usuarios, y que la primera fase del malware recopilaba datos del sistema como el nombre del equipo, software instalado y procesos en ejecución. Después, una segunda fase solo se desplegó en 40 equipos de alto interés, lo que apuntaba a una operación muy selectiva. Avast además encontró ShadowPad en cuatro equipos de Piriform y consideró que podía ser la tercera fase prevista del ataque. Cisco fue bastante duro con la respuesta recomendada en aquel momento: no bastaba con actualizar; recomendó limpiar completamente el equipo y restaurar desde una copia anterior al 15 de agosto de 2017, porque el malware podía permanecer en el sistema y pedir nuevas cargas maliciosas. Después vino otra polémica, ya no por malware sino por privacidad y telemetría. En 2018, la versión 5.45 de CCleaner amplió la funcionalidad de analítica y monitorización. La reacción de los usuarios fue tan mala que se terminó retirando esa versión, volvió a publicar la 5.44 y anunció que trabajaría en la 5.46 junto con una Data Factsheet para explicar mejor la recopilación de datos. Más adelante, Microsoft añadió otra capa de mala fama: en 2020, Microsoft Defender empezó a detectar ciertos instaladores de CCleaner, Defraggler, Recuva y Speccy como PUA (“potentially unwanted applications”) porque algunos instaladores ofrecían programas adicionales empaquetados, como Avast Free Antivirus, AVG Antivirus Free, Google Chrome o Google Toolbar. Microsoft remarcó que, aunque existía opción de rechazar esos añadidos, algunos usuarios podían instalarlos sin querer, y que en el caso del paquete con Avast la instalación podía ejecutarse en segundo plano e incluso desactivar o quitar un antivirus ya existente. A nivel corporativo, la historia siguió así: en septiembre de 2022, NortonLifeLock completó la compra de Avast; después el grupo pasó a llamarse Gen Digital. Hoy la propia web de CCleaner indica que CCleaner forma parte de Gen y que CCleaner es una marca registrada de Gen Digital Inc. Y aparte de CCleaner, Avast arrastró su propia controversia de privacidad por el caso Jumpshot. En 2024, Avast informó de un acuerdo con la FTC sobre la antigua cesión de datos de productos Avast y AVG a su filial Jumpshot, operación que, según Avast, había cesado al cerrar Jumpshot en enero de 2020. Esto no era el mismo incidente que el hack de CCleaner, pero contribuyó a la mala percepción pública del ecosistema Avast en materia de privacidad.</p>
+              <p><strong>[ENGLISH]</strong></p>
+              <p>In July 2017, Avast adquired Piriform, the company behind CCleaner, and announced that it would keep the brand. Shortly afterward, the most serious episode came to light: the 2017 security incident. According to Cisco Talos, the malicious version of CCleaner 5.33 was available for download between August 15 and September 12, 2017, and anyone who downloaded or updated it during that period became infected. Talos notified Avast on September 13, 2017. Later, Avast explained that the attackers had already compromised Piriform’s network before the acquisition, and that the initial access to the network dated back to March 11, 2017, using TeamViewer on a developer’s workstation. Avast also stated that the malicious code reached Piriform’s build environment at some point between March 11 and July 4, 2017, in other words, before Avast finalized the acquisition on July 18, 2017. That attack was not simple “adware” or a minor prank: Avast said the altered installer was downloaded by 2.27 million users, and that the first stage of the malware collected system data such as the computer name, installed software, and running processes. After that, a second stage was deployed only on 40 high-value target machines, which pointed to a highly selective operation. Avast also found ShadowPad on four Piriform machines and considered that it might have been the planned third stage of the attack. Cisco was quite blunt about the recommended response at the time: updating alone was not enough. It recommended fully cleaning the machine and restoring from a backup made before August 15, 2017, because the malware could remain in the system and request additional malicious payloads. Then came another controversy, this time not about malware but about privacy and telemetry. In 2018, CCleaner version 5.45 expanded analytics and monitoring functionality. User backlash was so strong that the version was ultimately withdrawn, version 5.44 was republished, and the company announced that it was working on version 5.46 along with a Data Factsheet to better explain data collection. Later, Microsoft added another layer to CCleaner’s bad reputation: in 2020, Microsoft Defender began detecting certain installers for CCleaner, Defraggler, Recuva, and Speccy as PUA (“potentially unwanted applications”) because some installers offered bundled programs such as Avast Free Antivirus, AVG Antivirus Free, Google Chrome, or Google Toolbar. Microsoft emphasized that, although there was an option to decline those extras, some users might install them unintentionally, and that in the case of the Avast bundle the installation could run in the background and even disable or remove an existing antivirus. At the corporate level, the story continued as follows: in September 2022, NortonLifeLock completed its acquisition of Avast; afterward, the group was renamed Gen Digital. Today, CCleaner’s own website states that CCleaner is part of Gen and that CCleaner is a registered trademark of Gen Digital Inc. And beyond CCleaner itself, Avast carried its own privacy controversy because of the Jumpshot case. In 2024, Avast reported an agreement with the FTC regarding the former transfer of data from Avast and AVG products to its subsidiary Jumpshot, an operation which, according to Avast, had already ceased when Jumpshot was shut down in January 2020. This was not the same incident as the CCleaner hack, but it contributed to the poor public perception of the Avast ecosystem in terms of privacy.</p>
+            </article>
+
+            <article class="release-card media-card">
+              <video src="1777980771.mp4" controls preload="metadata"></video>
+            </article>
+
+            <article class="release-card source-section">
+              <ul class="source-list">
+                <li>RPCS3 es un emulador de PlayStation 3 disponible en Windows, Linux, MacOS y FreeBSD.</li>
+                <li>PlayNite es una librería de videojuegos en PC para distintas plataformas.</li>
+                <li>PCSX2 es un emulador de la PlayStation 2 para Windows, Linux y macOS.</li>
+                <li>NetherSX2 es un emulador de la PlayStation2 para Android.</li>
+                <li>XEMU es un emulador de Xbox disponible en Windows, MacOS y Linux.</li>
+                <li>PPSSPP es un emulador de la PlayStation Portable disponible en Android, Linux, MacOS y PC.</li>
+                <li>Dolphin Emu es un emulador de Wii para Windows, MacOS y Android.</li>
+                <li>Bluestacks es un emulador de Android para Windows y MacOS.</li>
+              </ul>
+            </article>
+
+            <!-- Emulator video tutorials -->
+            <article class="release-card media-card">
+              <strong class="media-title">Errores físicos</strong>
+              <iframe src="https://drive.google.com/file/d/1TL6w4Ow7d7AplW_8K0H7vwfePGfdEIKJ/preview" width="640" height="480" title="Errores físicos" loading="lazy" allowfullscreen></iframe>
+            </article>
+            <article class="release-card media-card">
+              <strong class="media-title">TEU 4.0</strong>
+              <iframe src="https://drive.google.com/file/d/1TE7MHdF7hL80oEEZ5XNDbNOPEX54Y-8i/preview" width="640" height="480" title="TEU 4.0" loading="lazy" allowfullscreen></iframe>
+            </article>
+
+            <article class="release-card source-section">
+              <h3>Windows</h3>
+              <ul class="source-list">
+                <li>Lista de todas las tareas de los programas: GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}</li>
+                <li>Usuarios: Windows + R, escribir "netplwiz" y aceptar.</li>
+                <li>Archivos temporales: Windows + R, escribir temp y después %temp%.</li>
+                <li>Eliminación de software malintencionado: Windows + R, escribir mrt.</li>
+                <li>Paquetes y limpieza: Windows + R, escribir Cleanmgr.</li>
+                <li><a href="https://github.com/IridiumIO/CompactGUI" target="_blank" rel="noopener">CompactGUI</a></li>
+                <li>Archivo del servidor (.sx)</li>
+              </ul>
+              <div class="windows-images">
+                <figure class="windows-shot">
+                  <a href="Jdownloader.png" target="_blank" rel="noopener"><img src="Jdownloader.png" alt="JDownloader logo" /></a>
+                  <figcaption>
+                    <strong>Logo</strong>
+                    <span>Descargando en la computadora un archivo del servidor (.sx) utilizando JDownloader.</span>
+                  </figcaption>
+                </figure>
+
+                <figure class="windows-shot">
+                  <a href="1735598185752.PNG" target="_blank" rel="noopener"><img src="1735598185752.PNG" alt="JDownloader software" /></a>
+                  <figcaption>
+                    <strong>JDownloader software</strong>
+                    <span>JDownloader es un gestor de descargas de código abierto escrito en Java que permite la descarga de archivos de sitios de alojamiento.</span>
+                  </figcaption>
+                </figure>
+
+                <figure class="windows-shot">
+                  <a href="Captura.png" target="_blank" rel="noopener"><img src="Captura.png" alt="JDownloader support article" /></a>
+                  <figcaption>
+                    <strong>Support article</strong>
+                    <span>Una vez pegado y añadido el enlace, el programa busca los ficheros hasta completar una lista dividida en tipos de archivos.</span>
+                    <span>Durante el proceso de instalación, el instalador pregunta si se acepta o se niega la instalación opcional de componentes adicionales.</span>
+                  </figcaption>
+                </figure>
+
+                <figure class="windows-shot">
+                  <a href="1735598185757.PNG" target="_blank" rel="noopener"><img src="1735598185757.PNG" alt="My JDownloader" /></a>
+                  <figcaption>
+                    <strong>My JDownloader</strong>
+                    <span>Dependiendo del servidor, puede requerirse verificación por Captcha instalando la extensión de JDownloader en el navegador.</span>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+
+            <article class="release-card source-section">
+              <h3>Open source</h3>
+              <ul class="resource-links">
+                <li><a href="https://github.com/qgis/qgis" target="_blank" rel="noopener">QGIS</a></li>
+                <li><a href="https://www.blender.org" target="_blank" rel="noopener">Blender</a></li>
+                <li><a href="https://static.makehumancommunity.org/makehuman/releases.html" target="_blank" rel="noopener">MakeHuman</a></li>
+                <li><a href="https://vroid.com/en" target="_blank" rel="noopener">VRoid</a></li>
+                <li><a href="https://freetubeapp.io" target="_blank" rel="noopener">FreeTube</a></li>
+                <li><a href="https://github.com/MarmadileManteater/FreeTubeAndroid/releases" target="_blank" rel="noopener">FreeTube Android</a></li>
+                <li><a href="https://www.nextdownloader.com/try-online" target="_blank" rel="noopener">Next Downloader</a></li>
+                <li><a href="https://github.com/irwir/eMule/releases/" target="_blank" rel="noopener">eMule</a></li>
+                <li><a href="https://github.com/HandBrake/HandBrake/releases" target="_blank" rel="noopener">HandBrake</a></li>
+                <li><a href="https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe" target="_blank" rel="noopener">OCR</a></li>
+                <li><a href="https://lockhunter.com" target="_blank" rel="noopener">LockHunter</a></li>
+                <li><a href="https://github.com/ONLYOFFICE/DesktopEditors" target="_blank" rel="noopener">ONLYOFFICE Desktop Editors</a></li>
+                <li><a href="https://www.pdfgear.com/es/" target="_blank" rel="noopener">PDFgear</a></li>
+                <li><a href="https://github.com/VoylinsGamedevJourney/gozen" target="_blank" rel="noopener">GoZen</a></li>
+                <li><a href="https://github.com/Refloow/Refloow-Video-Editor" target="_blank" rel="noopener">Refloow Video Editor</a></li>
+                <li><a href="https://github.com/fmhy/FMHY" target="_blank" rel="noopener">FMHY</a></li>
+              </ul>
+              <pre class="monospace-block">
+IMAGEN
+https://www.watermarkremover.io
+
+VÍDEOS
+https://online-video-cutter.com/es/
+https://www.freeconvert.com/es/video-compressor
+
+TTS
+https://fakeyou.com/tts
+https://tts.nos.gal
+http://gtm.uvigo.es/en/transfer/software/cotovia
+              </pre>
+            </article>
+
+            <article class="release-card source-section">
+              <h3>Etiquetas</h3>
+              <ul class="tag-list">
+                <li><span>android</span></li>
+                <li><span>appdata</span></li>
+                <li><span>cmd</span></li>
+                <li><span>comandos</span></li>
+                <li><span>media</span></li>
+                <li><span>pc</span></li>
+                <li><span>playstation</span></li>
+                <li><span>psp</span></li>
+                <li><span>retro</span></li>
+                <li><span>url</span></li>
+                <li><span>videos</span></li>
+                <li><span>wii</span></li>
+                <li><span>windows</span></li>
+                <li><span>xbox</span></li>
+                <li><span>youtube</span></li>
+              </ul>
+            </article>
+          </div>
+        </article>
+
+        <article id="piracy" class="panel">
+          <h2>Piracy</h2>
+
+          <!-- Display the PRAGMATA.JPG artwork at the beginning of the Piracy section. 
+               This was requested by the user to ensure the static image appears on the page. -->
+          <div class="release-card media-card">
+            <!-- Load PRAGMATA.JPG from the original repository so it displays correctly when hosted on GitHub. -->
+            <a href="https://softfxc.github.io/PRAGMATA.JPG" target="_blank" rel="noopener">
+              <img src="https://softfxc.github.io/PRAGMATA.JPG" alt="PRAGMATA" />
+            </a>
+          </div>
+
+          <div class="card">
+            <strong class="card-title">GitHub - Hypervisor Crack Audit</strong>
+            <a href="https://github.com/RD945/hypervisor-crack-audit" target="_blank" rel="noopener">
+              https://github.com/RD945/hypervisor-crack-audit
+            </a>
+          </div>
+
+          <div class="card">
+            <strong class="card-title">GitHub - HyperVision</strong>
+            <a href="https://github.com/modgames44/HiperVisor-Denuvo" target="_blank" rel="noopener">
+              https://github.com/modgames44/HiperVisor-Denuvo
+            </a>
+            <!-- Embedded previews for the HyperVision GitHub project -->
+            <iframe src="https://drive.google.com/file/d/1wHo0umHw288xM2FzXSzKdBNJTyilGoTQ/preview" width="640" height="480"></iframe>
+            <iframe src="https://drive.google.com/file/d/1mn-RfHwFFWJwZlIvv_qWN97Awx-fbvzA/preview" width="640" height="480"></iframe>
+          </div>
+
+          <article class="release-card reddit-card">
+            <h3 style="color: orange;">REDDIT</h3>
+            <div class="reddit-meta">
+              <strong>¿Ha hecho ya algún daño Hypervisor?</strong>
+              <span>Título original: Has Hypervisor done any damage yet?</span>
+              <span>Autor: /u/Ephemerxl</span>
+              <span>Fecha: 26 de abril de 2026</span>
+            </div>
+            <div class="reddit-thread">
+              <p>Veo mucha concienciación sobre Hypervisor y el daño potencial que podría hacerte a ti y a tu sistema. Y aunque es bueno que la gente se esté informando, todavía no he visto un resultado malo real, solo gente hablando por hablar sobre lo malicioso y malvado que es este tipo de "crack" sin haberlo probado ellos mismos. Un primo mío instaló Crimsom Desert de FitGirl hace un buen mes y no ha pasado nada hasta ahora. ¿Hay algún informe o algo sobre Hypervisor que realmente haya dañado algo? ¿Cuentas bancarias, equipos arruinados o simplemente malware directo? ¿O es realmente solo gente hablando hasta ahora?</p>
+              <p><span class="reddit-section-title">Segundo resultado:</span> "[Deep Dive] ¿Qué es Hypervisor? ¿Cómo funciona?..."</p>
+              <p>[Deep Dive] What is Hypervisor? How does it work? Should I Revert All Settings and Restart My PC via the VBS Script After Each Play Session Using Hypervisor? If I use it, can I get hacked visiting a website? etc</p>
+              <p>Recientemente he estado escuchando a mucha gente afirmar que si usas el crack de hypervisor, desactivando los ajustes de seguridad para jugar a los juegos, entonces si no reviertes los ajustes inmediatamente, a través del script VBS y reinicias, serías hackeado inmediatamente con solo algo tan simple como visitar una página web.</p>
+              <p>ESO no es cierto en absoluto (bueno, no del todo), déjame profundizar un poco más para explicar qué estás sacrificando realmente al usar el Hypervisor.</p>
+              <p>Pero antes de que podamos llegar a eso, déjame explicar esto primero.</p>
+              <p><span class="reddit-section-title">¿Qué es siquiera Hypervisor?</span></p>
+              <p>Vale, ahora, normalmente, cuando tu SO, en este caso, Windows tiene el nivel más alto de control sobre tu ordenador. Gestiona todo tu software, tu RAM, tu SSD, tu CPU, tu GPU y todo. Llamamos a esto ejecutarse en Ring 0, también conocido como el nivel Kernel (aquí es donde viven el anti-cheat, los drivers, etc.)</p>
+              <p>Sin embargo, un hypervisor es especial aquí, es un software que realmente se sitúa debajo del SO, realmente sobre el hardware mismo, y llamamos a esto Ring -1.</p>
+              <p>Pero espera un segundo, ¿por qué necesitamos esto para jugar a juegos Denuvo? Bueno, aquí está.</p>
+              <p><span class="reddit-section-title">¿Por qué necesitamos esto siquiera?</span></p>
+              <p>Por razones semánticas, déjame aclarar esto de una vez, Denuvo NO es en realidad un DRM, es un software Anti-Manipulación que ENVUELVE el DRM real, como Steam/Epic. Entonces, ¿por qué esta distinción? Simple, porque el trabajo de Denuvo no es proteger el juego, es envolver el DRM real y asegurarse de que no sea alterado a través de la monitorización en tiempo de ejecución.</p>
+              <p>Por ejemplo, si intento modificar los códigos del juego, en este caso, eliminando la verificación de licencia, Denuvo lo detectaría y terminaría el juego. Lo hace de muchas maneras, a través de comprobaciones, como CPUID, KUSER_SHARED_DATA, PEB (Bloque de Entorno de Proceso), etc., etc., no profundizaremos en estas comprobaciones esta vez, porque eso es un tema para otro día.</p>
+              <p>Solo sabe esto, Denuvo es como un guardia de seguridad súper súper paranoico profundamente incrustado en el sistema, comprueba muchas cosas y muchas veces al ejecutar el juego, de ahí que haga que los métodos de cracking tradicionales sean súper difíciles, porque este guardia de seguridad es súper diligente haciendo su trabajo, comprueba demasiadas cosas y demasiadas veces, y para evitarlo, necesitamos parchear estas comprobaciones manualmente una por una. (Hay algunas herramientas en manos privadas de los crackers para hacer las cosas más fáciles pero lo fundamental no cambia)</p>
+              <p>Piénsalo de esta manera, el juego, digamos Stellar Blade es un Club de Strip premium (que ya lo es en cierto modo lmao), y quieres entrar al club de strip, pero la tarifa de entrada es de 70 dólares (bastante barato para un club pero ya entiendes la idea), no quieres pagar por eso, por supuesto, así que te cuelas, lo cual ya es suficientemente difícil, ya que necesitas eludir las primeras comprobaciones especiales Pre OEP (esto es lo que se ejecuta justo antes de entregar el control al Punto de Entrada Original, también gestiona la validación de tokens, caducidad, etc. para la gente que usa Activaciones Offline, asumamos que lo has eludido)</p>
+              <p>Ahora estás en el club, ves, pero inmediatamente ves a este guardia de seguridad Denuvo acercándose a ti, y dice "Eh, ¿dónde está tu ticket?"</p>
+              <p>Respondes con "Ah.... ¿ticket?"</p>
+              <p>Y te echan (el juego se cierra)</p>
+              <p>incluso si eludes eso, el guardia de seguridad volvería inmediatamente y diría "¿Por qué vistes de azul? No permitimos ropa azul aquí"</p>
+              <p>Y tú dices "ahh visto azul..."</p>
+              <p>Te echan</p>
+              <p>y digamos que eludes todas esas, y te diviertes durante un par de minutos, yendo a otra sala ahora (pantalla de carga), entonces el guardia de seguridad viene otra vez, preguntándote "¡Quiero ver tu firma, escríbela en este papel, ahora mismo!"</p>
+              <p>Intentas falsificar una firma de tu identidad fingida lo mejor que puedes, pero el guardia de seguridad de repente grita "¡Has tardado demasiado tiempo escribiendo esto! ¡Eres un FALSO! ¡FUERA AHORA!" y te echan otra vez (rip)</p>
+              <p><span class="reddit-section-title">Cómo elude realmente Hypervisor esto</span></p>
+              <p>Digamos, con Hypervisor, como eres un controlador mental, un maldito Lelouch o Jedi, entras al club, el guardia de seguridad te pregunta. "¿Dónde está tu ticket?"</p>
+              <p>Levantas la mano, y dices "¡TENGO EL TICKET!" Controlas su mente, haciéndole pensar que sí tienes el ticket.</p>
+              <p>El guardia de seguridad dice inmediatamente "Oh disculpe, señor, culpa mía, por favor disfrute"</p>
+              <p>Pero luego vuelve, te mira y dice "Espera, ¿por qué vistes de azul? No permitimos..."</p>
+              <p>"¡NO VISTO DE AZUL!" Levantas la mano y le controlas la mente otra vez.</p>
+              <p>Y te deja pasar porque tiene la mente controlada por ti.</p>
+              <p>Lo mismo para la comprobación de firma, "¡Escribe la firma ahora mismo!"</p>
+              <p>"¡LA HE ESCRITO!"</p>
+              <p>"Oh, por supuesto, disculpe la interrupción."</p>
+              <p>Así que sí, así es como funciona hypervisor, divagué mucho aquí, pero es algo necesario para que puedas entender cómo se necesita realmente hypervisor y cómo funciona.</p>
+              <p>Ahora volvamos a lo que estábamos diciendo.</p>
+              <p><span class="reddit-section-title">¿Qué necesita realmente Hypervisor que desactives?</span></p>
+              <p>Actualmente con el método Kirigiri, estas son las cosas que necesitas desactivar antes de poder usar el crack Hypervisor.</p>
+              <p>Integridad de Memoria (HVCI), Credential Guard, Windows Hello, Hyper-V, Driver Signature Enforcement (DSE).</p>
+              <p>Sin embargo, lo que NO está desactivado es:</p>
+              <p>Secure Boot y EfiGuard</p>
+              <p>Déjame explicar qué son estas cosas que se desactivan una por una.</p>
+              <p>Integridad de Memoria (HVCI), esta es una característica de seguridad introducida por Microsoft en 2016 como parte de Windows 10, (debutó en 2015 pero se lanzó oficialmente con Windows 10)</p>
+              <p>esto es como una sala segura en tu Windows, así que antes de que puedas instalar/usar un driver (cualquier cosa realmente, tu driver de GPU, tu impresora, etc.), Windows lo envía a una sala segura, para examinarlo, comprueba su firma digital, si no es confiable, o está manipulado, es enviado al reino de las sombras (o simplemente bloqueado lol)</p>
+              <p>También se asegura de que los drivers sean de Solo Lectura, para prevenir el Secuestro del Kernel.</p>
+              <p>Entonces, la cuestión es que necesitamos cargar nuestros propios drivers y no podemos permitir que sea arrastrado a la sala segura, porque una vez allí, no podemos pasar y nuestro driver crack es golpeado y desechado, así que, tiene que desaparecer.</p>
+              <p>Credential Guard</p>
+              <p>Esto es esencialmente un gran contenedor seguro para todas tus credenciales importantes, como tus tickets Kerberos, tus datos biométricos, y tus datos de autenticación, no profundicemos en esto, déjame resumir aquí, todos tus secretos de red muy importantes se almacenan en esta gran caja segura, si la desactivas, un hacker, puede simplemente volcar tus credenciales o suplantarte a través de la red.</p>
+              <p>Técnicamente hablando, esto es más un daño colateral, porque el crack Hypervisor no hace nada en este departamento pero tenerlo activado causa conflictos de virtualización con nuestro Hypervisor, así que se desactiva.</p>
+              <p>Windows Hello</p>
+              <p>Esto almacena tus PINs, reconocimiento facial, y escaneos de huellas dactilares, etc., se desactiva porque depende de Credential Guard.</p>
+              <p>Hyper-V</p>
+              <p>El Hypervisor oficial de Windows, esto es lo principal para nosotros desactivar para poder cargar nuestro Hypervisor, pero no podemos desactivar esto y cargar nuestro Hypervisor, así que todo lo anterior tiene que ser desactivado primero (que son las características VBS) y adicionalmente, debemos añadir opción de arranque para prevenir que Hyper-V se cargue.</p>
+              <p>Driver Signature Enforcement (DSE)</p>
+              <p>Esto es prácticamente lo más importante para nosotros desactivar. Porque con ello, Windows se asegura de que cada driver que carga tenga el certificado aprobado por Microsoft y nosotros no tenemos nada de eso. (Pero oye, si eres algún insider de Microsoft de alto nivel que quiera arriesgar su trabajo y potencialmente acabar en la cárcel por esta comunidad y puntos de internet, siéntete libre de contactar a Kirigiri, también esto es cuando cargas el script y reinicias el ordenador, ves una pantalla azul y tienes que presionar F7)</p>
+              <p><span class="reddit-section-title">Así que, ¿cuáles son las consecuencias entonces?</span></p>
+              <p>Primero de todo déjame decir esto, con todas estas cosas desactivadas, tu Firewall de Windows, y Windows Defender seguirán funcionando.</p>
+              <p>Tu firewall continuará funcionando perfectamente. Seguirá monitorizando tu tráfico de internet, bloqueando conexiones entrantes no autorizadas, y deteniendo ataques básicos de red. No depende de Hyper-V o DSE para funcionar en absoluto.</p>
+              <p>Y tu Windows Defender continuará haciendo su trabajo también, escaneando activamente los archivos que descargas, monitorizando tu PC en busca de virus conocidos, y eliminando malware básico (por ejemplo, como un troyano estándar o un keylogger que descargaste accidentalmente de algún sitio sospechoso).</p>
+              <p>Sin embargo, hay solo una pega, porque ahora has desactivado DSE y Hyper-V, Windows ahora está dispuesto a aceptar cualquier archivo de driver subyacente sin firma. Esto abre la puerta a un tipo muy muy particular de Malware, Rootkits, o Driver Malware, y puede hacer grandes daños.</p>
+              <p>Ya que, puede cargar su propio driver malicioso no firmado directamente en el Kernel de tu sistema, obtiene acceso a todo, puede apagar Windows Defender, añadir excepción al firewall, para que los hackers puedan acceder remotamente a tu PC, incrustarse por debajo del SO en (alias Rootkit)</p>
+              <p><span class="reddit-section-title">¿Sería hackeado si no revierto los ajustes simplemente visitando una página web?</span></p>
+              <p>No. Cuando visitas un sitio web, el navegador ejecuta los códigos del sitio, como HTML, CSS y JS, etc., dentro de un entorno altamente restringido llamado sandbox. Para que un hacker comprometa tu PC solo por visitar una página web, necesitan una cadena de exploits.</p>
+              <p>Una vulnerabilidad de Ejecución Remota de Código (RCE) para ejecutar código malicioso dentro del navegador en primer lugar.</p>
+              <p>Vulnerabilidad de Escape de Sandbox para salir del navegador e interactuar con el SO.</p>
+              <p>Vulnerabilidad de Escalada de Privilegios para obtener control profundo a nivel administrativo o de kernel sobre tu PC.</p>
+              <p>(Así es como algunas consolas son hackeadas realmente)</p>
+              <p>Lo único que comprometemos con el crack Hypervisor es el tercer paso, pero el primero y el segundo permanecen fuertes disuadiendo este tipo de ataques.</p>
+              <p>Asumiendo que actualizas tu navegador regularmente, un hacker necesitaría lo que se llama un Exploit 0-Day para controlar tu PC, pero esta es la cuestión, un 0-day de navegador encadenado completamente funcional vale millones de dólares, nadie va a desperdiciar sus 0-days de varios millones de dólares en unos malditos jugadores aleatorios que quieren jugar a juegos Denuvo.</p>
+              <p><span class="reddit-section-title">Pero cómo sería hackeado realmente</span></p>
+              <p>Simple, realmente descargas algo, que Windows Defender grita que es malicioso, y lo ejecutas. Como un virus tradicional.</p>
+              <p>El ataque perfecto aquí vendría realmente de, los propios crackers y repackers, como Kirigiri, Fitgal, y Dodi.</p>
+              <p>Por ejemplo, Fit de repente pasa por una crisis de mediana edad o lo que sea y decide causar estragos absolutos en la comunidad pirata, ya que confías en ella, y ella te dice que no importa si Windows Defender piensa que mi repack HV es un virus porque es un falso positivo, lo instalas y eres hackeado.</p>
+              <p>Sin embargo, eso no sucede realmente, tienen una reputación que gestionar, y dudo mucho que alguien hiciera eso de repente.</p>
+              <p>El otro vector de ataque es también ejecutar algún exe, podría ser algo de algunos sitios no confiables, etc., pero eso no es muy diferente de cómo la gente suele ser hackeada, usando sitios no confiables.</p>
+              <p><span class="reddit-section-title">¿Debería revertir los ajustes después de cada sesión de juego?</span></p>
+              <p>técnicamente hablando, no, esto puede sorprender, pero si sabes lo que haces, mantienes tu navegador actualizado, y no descargas cosas de sitios no confiables, entonces está bien (a menos que quieras jugar a juegos competitivos online de mierda, ya que el anti-cheat no funcionará con estos ajustes desactivados, y esos juegos no se lanzarán), no hay daño. Pero si descargas cosas aleatorias de internet, entonces seamos francos aquí, no deberías siquiera estar intentando hacer esto en primer lugar.</p>
+              <p>Sobre Kirigiri y Voices38: Una publicación con el título "Resident evil 9 has been cracked with hypervisor in less than an hour by Kirigiri" confirma el crackeo inicial por parte de Kirigiri. Posteriormente, Kirigiri comunicó en su Discord que "Voices está crackeando RE9 ahora mismo, así que no hay necesidad de actualizar el hypervisor", lo que indica su colaboración en un nuevo método para el mismo juego.</p>
+              <p>Si necesitas conservar tu progreso del juego, ten en cuenta que los archivos de guardado del Hypervisor y los de Voices38 utilizan diferentes Steam IDs, lo que impide que el juego los reconozca directamente. Para solucionarlo, la comunidad recomienda usar la herramienta mhtame para extraer el Steam ID de ambas partidas y luego Mandarinjuice para firmar la partida antigua con el nuevo ID. Las rutas donde se almacenan estos archivos son: Ruta de las partidas de Hypervisor: C:\Users\Usuario\AppData\Roaming\GSE Saves\3764200\remote\win64_save</p>
+              <p>Ruta de las partidas de Voices38: Program Files (x86)\steam\userdata\19627\3764200\remote\win64_save</p>
+            </div>
+          </article>
+
+          <button class="yt-preview" id="ytPreview" type="button" aria-label="Play YouTube video" onclick="loadYouTubeEmbed()">
+            <img
+              src="https://img.youtube.com/vi/LsxqW9xU-u4/maxresdefault.jpg"
+              alt="YouTube video thumbnail"
+              onerror="this.onerror=null; this.src='https://img.youtube.com/vi/LsxqW9xU-u4/hqdefault.jpg';"
+            />
+            <span class="play-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7Z" />
+              </svg>
+            </span>
+          </button>
+          <div class="release-card media-card">
+            <video src="STK2.mp4" controls preload="metadata"></video>
+          </div>
+          <p class="handwritten-note">Ten, que Leon Scott Kennedy está batallando, cornudo.</p>
+
+          <iframe
+            class="yt-extra-embed"
+            src="https://www.youtube.com/embed/J7X9a-x2Qb0"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+          <iframe
+            class="yt-extra-embed"
+            src="https://www.youtube.com/embed/jZ2AzR-Iees"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+          <!-- Removed STK1.mp4 (Makka Pakka) as requested -->
+
+<div class="hydra-card">
+            <div class="card-header">
+              <img alt="Hydra Logo" src="https://private-user-images.githubusercontent.com/268363914/584438837-bbd86b8e-132f-4a7c-9843-24c1209e60a5.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzgwODMzNDEsIm5iZiI6MTc3ODA4MzA0MSwicGF0aCI6Ii8yNjgzNjM5MTQvNTg0NDM4ODM3LWJiZDg2YjhlLTEzMmYtNGE3Yy05ODQzLTI0YzEyMDllNjBhNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTA2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUwNlQxNTU3MjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04MzBiNDA5MDQyMzhiM2M5ODk1Yjg1ZTU4NzUwMzczMWQ0MzQwNTg2OGFmMjhhZTdhZTRkMmZmN2MyZTZiOGQwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.Z19Re48HBRYanwGmvqYqNjROtxGXzLAfZ2Dqi35pDtE" onerror="this.onerror=null; this.src='https://cdn.losbroxas.org/favicon-96x96.png';" />
+              <span class="brand-name">Hydra</span>
+            </div>
+            <div class="text-panel" style="flex: 0 0 auto; min-width: auto;">
+              <div class="carousel-wrapper">
+                <button aria-label="Anterior" class="arrow-btn" id="prevBtnHydra" type="button">◀</button>
+                <div class="text-carousel-container" id="textCarouselHydra" style="min-height: 120px;"></div>
+                <button aria-label="Siguiente" class="arrow-btn" id="nextBtnHydra" type="button">▶</button>
+              </div>
+              <div class="buttons-row">
+                <a class="btn btn-download" href="https://github.com/softfxc/hydra/releases/download/%231/Hydra.apk" rel="noopener noreferrer" target="_blank">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11 1a1 1 0 0 1 1 1v11.59l3.29-3.3a1 1 0 0 1 1.42 1.42l-5 5a1 1 0 0 1-1.42 0l-5-5a1 1 0 0 1 1.42-1.42L10 13.59V2a1 1 0 0 1 1-1Z" />
+                    <path d="M4 14a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4a1 1 0 1 1 2 0v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-4a1 1 0 0 1 1-1Z" />
+                  </svg>
+                  Descargar APK
+                </a>
+                <a class="btn btn-source" href="https://github.com/softfxc/hydra/releases/download/%231/Hydra.7z" rel="noopener noreferrer" target="_blank">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6H8a1 1 0 0 0 0 2h8.3l-1.6 1.6a1 1 0 0 0 1.4 1.4l3.3-3.3a1 1 0 0 0 0-1.4l-3.3-3.3a1 1 0 0 0-1.4 0zM4 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H6v12h4a1 1 0 0 1 0 2H6a2 2 0 0 1-2-2V6z" />
+                  </svg>
+                  Source Code
+                </a>
+                <a class="btn btn-github" href="https://github.com/softfxc/hydra" rel="noopener noreferrer" target="_blank">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                  </svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+            </article>
+
+            <!-- Updated Flix section -->
+        <article id="flix" class="panel">
+          <h2>Flix</h2>
+          <div class="media-grid">
+            <!-- Existing media cards -->
+                <article class="release-card media-card">
+                  <a href="Pakka.png" target="_blank" rel="noopener">
+                    <img src="Pakka.png" alt="Pakka" />
+                  </a>
+                </article>
+            <article class="release-card media-card">
+              <strong class="media-title">The Walking Dead</strong>
+              <iframe
+                src="https://drive.google.com/file/d/1ngWy7LYHGVbbg0BmfFGiuA4NZxAyP1rX/preview"
+                title="The Walking Dead"
+                loading="lazy"
+                allowfullscreen></iframe>
+            </article>
+
+            <article class="release-card media-card">
+              <strong class="media-title">Stranger Things</strong>
+              <iframe
+                src="https://drive.google.com/file/d/108SBzohpXSBTeEZH_zTrZ3JJTlhpOQ0i/preview"
+                title="Stranger Things"
+                loading="lazy"
+                allowfullscreen></iframe>
+              <iframe
+                src="https://drive.google.com/file/d/1ftl-YbTb_lI3143LTvIsorOzE3O2rDa3/preview"
+                title="Stranger Things"
+                loading="lazy"
+                allowfullscreen></iframe>
+            </article>
+
+            <article class="release-card media-card">
+              <strong class="media-title">Arcane</strong>
+              <iframe
+                src="https://drive.google.com/file/d/1QeEqtpwkl-2jZF_p0oKpTJ_7-723ZKKW/preview"
+                title="Arcane"
+                loading="lazy"
+                allowfullscreen></iframe>
+              <strong class="media-title">The Last of Us</strong>
+              <!-- Videos carousel below Arcane -->
+              <div class="video-carousel carousel">
+                <iframe src="https://drive.google.com/file/d/1_cp9qoGqhi_a495VsviOnL8f_7DLfcCm/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/16p8VWnS9N4JcO7C9AOlqW_qau2lY7_wT/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/1gEycSng0VSoJjPlheZ2vibROnNMqP0Av/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/1ePOZbLvBHLA_X_3y4hvY096B_70O5R4g/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/J_zZtrXC2AA" loading="lazy" allowfullscreen></iframe>
+              </div>
+              <!-- PDFs carousel below videos -->
+              <div class="pdf-carousel carousel">
+                <iframe src="https://drive.google.com/file/d/14myohj9Qw9zKaiPnlf4fbb-KnyXOP2YI/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/1DDQ89KM-ipvPh25o2iPIoBRgdHZoeKdZ/preview" loading="lazy" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/1qb32CugNjatl20wku25csIuSf0iMN7oo/preview" loading="lazy" allowfullscreen></iframe>
+              </div>
+              <!-- Photos carousel below PDFs -->
+              <div class="photo-carousel carousel">
+                <img src="1888930_library_hero.jpg" alt="library hero" />
+                <img src="all.png" alt="all" />
+                <img src="background1.jpg" alt="background1" />
+                <img src="background2.png" alt="background2" />
+                <img src="clicker.jpg" alt="clicker" />
+                <img src="Collector's.png" alt="Collector's" />
+                <img src="cosplay.jpg" alt="cosplay" />
+                <img src="doll.png" alt="doll" />
+                <img src="in1.jpg" alt="in1" />
+                <img src="in2.jpg" alt="in2" />
+                <img src="its1.jpg" alt="its1" />
+                <img src="its2.jpg" alt="its2" />
+                <img src="mod.png" alt="mod" />
+                <img src="paper.png" alt="paper" />
+                <img src="photomode.jpg" alt="photomode" />
+                <img src="photomode.png" alt="photomode" />
+                <img src="photomode2.png" alt="photomode2" />
+                <img src="post.jpg" alt="post" />
+                <img src="post2.png" alt="post2" />
+                <img src="poster.jpg" alt="poster" />
+                <img src="prank.png" alt="prank" />
+                <img src="pre1.jpg" alt="pre1" />
+                <img src="pre2.jpg" alt="pre2" />
+                <img src="she.jpg" alt="she" />
+                <img src="she2.jpg" alt="she2" />
+                <img src="Shot (1).png" alt="shot 1" />
+                <img src="Shot (2).png" alt="shot 2" />
+                <img src="Shot (3).png" alt="shot 3" />
+                <img src="Shot (4).png" alt="shot 4" />
+                <img src="Shot (5).png" alt="shot 5" />
+                <img src="shot (6).png" alt="shot 6" />
+                <img src="shot (7).png" alt="shot 7" />
+                <img src="shot (8).png" alt="shot 8" />
+                <img src="shot (9).png" alt="shot 9" />
+                <img src="shot (10).png" alt="shot 10" />
+                <img src="sticker1.png" alt="sticker1" />
+                <img src="sticker2.png" alt="sticker2" />
+              </div>
+            </article>
+          </div>
+        </article>
+        <!-- Styles and carousel scripts for Flix -->
+        <style>
+          /* Hide all slides by default */
+          .carousel > * {
+            display: none;
+            width: 100%;
+          }
+          /* Show the active slide */
+          .carousel > *.active {
+            display: block;
+          }
+          .carousel {
+            margin-top: 16px;
+          }
+          /* Ensure images fit their container */
+          .photo-carousel img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+          }
+          /* Videos and PDFs full width */
+          .video-carousel iframe,
+          .pdf-carousel iframe {
+            width: 100%;
+            height: 480px;
+            border: none;
+          }
+        </style>
+        <script>
+          /**
+           * Initialise a simple carousel that cycles through its child elements.
+           * Items are shown one at a time and the carousel pauses on hover.
+           * @param {Element} container The carousel container element.
+           */
+          function initCarousel(container) {
+            const items = Array.from(container.children);
+            if (items.length === 0) return;
+            let index = 0;
+            // Mark the first item as active
+            items[0].classList.add('active');
+            let timer;
+            const switchSlide = () => {
+              items[index].classList.remove('active');
+              index = (index + 1) % items.length;
+              items[index].classList.add('active');
+            };
+            const startTimer = () => {
+              timer = setInterval(switchSlide, 4000); // 4 seconds per slide
+            };
+            const stopTimer = () => {
+              clearInterval(timer);
+            };
+            // Start automatic sliding
+            startTimer();
+            // Pause on hover
+            container.addEventListener('mouseenter', stopTimer);
+            container.addEventListener('mouseleave', startTimer);
+          }
+          document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.carousel').forEach(initCarousel);
+          });
+        </script>
+      </section>
+    </main>
+
+    <aside class="right-sidebar" id="siteSidebar">
+      <section class="profile-card">
+        <img
+          src="profile.jpg"
+          alt="Soft FXC Profile"
+          onerror="this.onerror=null; this.src='https://github.com/softfxc.png?size=240';"
+        />
+        <p class="support-text">Please support my site</p>
+      </section>
+
+      <section class="rss-box">
+        <h3>Subscribe to RSS feed with e-mail</h3>
+        <form class="rss-form" action="https://api.follow.it/subscribe" method="post" target="_blank">
+          <input type="email" name="email" placeholder="Your e-mail" required />
+          <button type="submit">Subscribe</button>
+        </form>
+        <a class="rss-link" href="rss.xml" target="_blank" rel="noopener">RSS feed</a>
+      </section>
+
+      <section class="sidebar-faq" id="faq">
+        <h3>FAQ</h3>
+        <div class="forum-box">
+          <script src="https://utteranc.es/client.js"
+            repo="softfxc/softfxc.github.io"
+            issue-term="pathname"
+            label="FAQ"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+          </script>
+          <div id="google-comments" hidden></div>
+          <div id="disqus_thread" hidden></div>
+        </div>
+      </section>
+
+      <section class="views-box" aria-label="Public view counter">
+        <h3>VIEWS</h3>
+        <strong class="views-number" id="viewsCount">—</strong>
+      </section>
+    </aside>
+
+    <!-- Footer removed as per updated design -->
+  </div>
+
+  <!-- Back to top arrow -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script>
+    const tabButtons = document.querySelectorAll(".header-tab");
+    const panels = document.querySelectorAll(".panel");
+    const siteBrand = document.querySelector(".brand");
+    const searchToggle = document.getElementById("searchToggle");
+    const searchPopover = document.getElementById("searchPopover");
+    const siteSearch = document.getElementById("siteSearch");
+    const heroVideo = document.getElementById("heroVideo");
+    const videoAudio = document.getElementById("videoAudio");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    const siteSidebar = document.getElementById("siteSidebar");
+    const viewsCount = document.getElementById("viewsCount");
+    const viewsCounterBase = "https://api.counterapi.dev/v1/softfxc-github-io/views";
+    const mobileSidebar = window.matchMedia("(max-width: 680px)");
+    const sectionBrands = {
+      releases: "Soft FXC",
+      piracy: "Vikingo REPACKS",
+      flix: "Vikingo REPACKS"
+    };
+    let searchMatches = [];
+    let searchMatchIndex = -1;
+    let currentSearchQuery = "";
+    let lastSearchAdvanceAt = 0;
+
+    function updateViewsDisplay(result) {
+      if (!viewsCount) return;
+      const value = result?.value ?? result?.count ?? result?.data?.value ?? result?.data?.count;
+      if (typeof value === "number") {
+        viewsCount.textContent = value.toLocaleString("en-US");
+      }
+    }
+
+    function trackPublicView() {
+      if (!viewsCount || !window.fetch) return;
+      fetch(`${viewsCounterBase}/up`, { cache: "no-store" })
+        .then((response) => response.ok ? response.json() : Promise.reject(response))
+        .then(updateViewsDisplay)
+        .catch(() => {
+          if (viewsCount.textContent === "—") viewsCount.textContent = "0";
+        });
+    }
+
+    function setSidebarCollapsed(collapsed) {
+      document.body.classList.toggle("sidebar-collapsed", collapsed);
+      sidebarToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      sidebarToggle.setAttribute("aria-label", collapsed ? "Show sidebar" : "Hide sidebar");
+    }
+
+    setSidebarCollapsed(mobileSidebar.matches);
+
+    sidebarToggle.addEventListener("click", () => {
+      setSidebarCollapsed(!document.body.classList.contains("sidebar-collapsed"));
+    });
+
+    const handleSidebarBreakpoint = (event) => {
+      setSidebarCollapsed(event.matches);
+    };
+
+    if (mobileSidebar.addEventListener) {
+      mobileSidebar.addEventListener("change", handleSidebarBreakpoint);
+    } else {
+      mobileSidebar.addListener(handleSidebarBreakpoint);
+    }
+
+    function showTab(tabName, updateHash = false) {
+      const brand = sectionBrands[tabName] || sectionBrands.releases;
+      siteBrand.textContent = brand;
+      document.title = brand;
+
+      tabButtons.forEach((button) => {
+        const active = button.dataset.tab === tabName;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === tabName);
+      });
+
+      if (updateHash) {
+        history.replaceState(null, "", `#${tabName}`);
+      }
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showTab(button.dataset.tab, true);
+        trackPublicView();
+      });
+    });
+
+    searchToggle.addEventListener("click", () => {
+      const query = siteSearch.value.trim();
+      if (searchPopover.classList.contains("active") && query) {
+        runSearch(query);
+        return;
+      }
+
+      searchPopover.classList.toggle("active");
+      if (searchPopover.classList.contains("active")) siteSearch.focus();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!searchPopover.contains(event.target) && !searchToggle.contains(event.target)) {
+        searchPopover.classList.remove("active");
+      }
+
+      if (
+        mobileSidebar.matches &&
+        !document.body.classList.contains("sidebar-collapsed") &&
+        !siteSidebar.contains(event.target) &&
+        !sidebarToggle.contains(event.target)
+      ) {
+        setSidebarCollapsed(true);
+      }
+    });
+
+    function clearSearchHighlights() {
+      document.querySelectorAll("mark.search-highlight").forEach((mark) => {
+        const parent = mark.parentNode;
+        mark.replaceWith(document.createTextNode(mark.textContent));
+        parent?.normalize();
+      });
+      searchMatches = [];
+      searchMatchIndex = -1;
+      currentSearchQuery = "";
+    }
+
+    function escapeRegExp(value) {
+      return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function highlightMatches(root, query) {
+      const matcher = new RegExp(escapeRegExp(query), "gi");
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          if (parent.closest("script, style, input, textarea, mark")) return NodeFilter.FILTER_REJECT;
+          return node.nodeValue.toLowerCase().includes(query.toLowerCase())
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT;
+        }
+      });
+      const nodes = [];
+      let currentNode = walker.nextNode();
+
+      while (currentNode) {
+        nodes.push(currentNode);
+        currentNode = walker.nextNode();
+      }
+
+      nodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+
+        node.nodeValue.replace(matcher, (match, offset) => {
+          fragment.append(document.createTextNode(node.nodeValue.slice(lastIndex, offset)));
+          const mark = document.createElement("mark");
+          mark.className = "search-highlight";
+          mark.textContent = match;
+          fragment.append(mark);
+          lastIndex = offset + match.length;
+          return match;
+        });
+
+        fragment.append(document.createTextNode(node.nodeValue.slice(lastIndex)));
+        node.replaceWith(fragment);
+      });
+    }
+
+    function setActiveSearchMatch(index) {
+      if (!searchMatches.length) return;
+
+      searchMatches[searchMatchIndex]?.classList.remove("active-search-highlight");
+      searchMatchIndex = (index + searchMatches.length) % searchMatches.length;
+      const activeMatch = searchMatches[searchMatchIndex];
+      activeMatch.classList.add("active-search-highlight");
+      activeMatch.scrollIntoView({ block: "center", inline: "nearest" });
+
+      // Mobile browsers can keep the virtual keyboard open and sometimes place
+      // the highlighted result under the keyboard. This second pass uses the
+      // visual viewport, when available, to keep the active match visible.
+      if (window.visualViewport) {
+        setTimeout(() => {
+          const rect = activeMatch.getBoundingClientRect();
+          const safeTop = 80;
+          const safeBottom = window.visualViewport.height - 120;
+
+          if (rect.bottom > safeBottom) {
+            window.scrollBy({ top: rect.bottom - safeBottom, behavior: "smooth" });
+          } else if (rect.top < safeTop) {
+            window.scrollBy({ top: rect.top - safeTop, behavior: "smooth" });
+          }
+        }, 80);
+      }
+    }
+
+    function moveSearchMatch(direction) {
+      if (!searchMatches.length) return;
+      setActiveSearchMatch(searchMatchIndex + direction);
+    }
+
+    function runSearch(query) {
+      clearSearchHighlights();
+      if (!query) return;
+      currentSearchQuery = query;
+
+      const match = Array.from(panels).find((panel) =>
+        panel.textContent.toLowerCase().includes(query.toLowerCase())
+      );
+
+      if (match) {
+        showTab(match.id, true);
+        panels.forEach((panel) => highlightMatches(panel, query));
+        searchMatches = Array.from(match.querySelectorAll(".search-highlight"));
+        setActiveSearchMatch(0);
+      }
+    }
+
+    function advanceSearchOrRun(query) {
+      const cleanQuery = query.trim();
+
+      if (!cleanQuery) {
+        clearSearchHighlights();
+        return;
+      }
+
+      const sameSearch = cleanQuery.toLowerCase() === currentSearchQuery.toLowerCase();
+
+      if (sameSearch && searchMatches.length) {
+        moveSearchMatch(1);
+      } else {
+        runSearch(cleanQuery);
+      }
+    }
+
+    function handleSearchEnter(event) {
+      event?.preventDefault?.();
+
+      // Some Android keyboards emit both keydown and search/keyup-like actions.
+      // This guard prevents a single tap from advancing two highlighted matches.
+      const now = Date.now();
+      if (now - lastSearchAdvanceAt < 180) return;
+      lastSearchAdvanceAt = now;
+
+      advanceSearchOrRun(siteSearch.value);
+    }
+
+    siteSearch.addEventListener("input", (event) => {
+      runSearch(event.target.value.trim());
+    });
+
+    siteSearch.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        handleSearchEnter(event);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        moveSearchMatch(-1);
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        moveSearchMatch(1);
+      }
+    });
+
+    siteSearch.addEventListener("search", handleSearchEnter);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.target === siteSearch || !searchMatches.length) return;
+
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        moveSearchMatch(-1);
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        moveSearchMatch(1);
+      }
+    });
+
+    function startHeroVideo() {
+      const playAttempt = heroVideo.play();
+      if (playAttempt?.catch) {
+        playAttempt.catch(() => {
+          heroVideo.setAttribute("data-autoplay-blocked", "true");
+        });
+      }
+    }
+
+    if (heroVideo.readyState >= 2) {
+      startHeroVideo();
+    } else {
+      heroVideo.addEventListener("loadeddata", startHeroVideo, { once: true });
+    }
+
+    heroVideo.addEventListener("error", () => {
+      heroVideo.setAttribute("data-load-error", "true");
+    });
+
+    videoAudio.addEventListener("click", () => {
+      heroVideo.muted = !heroVideo.muted;
+      videoAudio.classList.toggle("unmuted", !heroVideo.muted);
+      videoAudio.setAttribute("aria-label", heroVideo.muted ? "Unmute video" : "Mute video");
+      startHeroVideo();
+    });
+
+    function loadYouTubeEmbed() {
+      const preview = document.getElementById("ytPreview");
+      if (!preview) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.className = "yt-preview";
+      iframe.src = "https://www.youtube.com/embed/LsxqW9xU-u4?autoplay=1&rel=0";
+      iframe.title = "YouTube video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      preview.replaceWith(iframe);
+    }
+
+    window.loadYouTubeEmbed = loadYouTubeEmbed;
+
+    function setupCarousel(containerId, prevId, nextId, fragments = []) {
+      const carouselContainer = document.getElementById(containerId);
+      const prevBtn = document.getElementById(prevId);
+      const nextBtn = document.getElementById(nextId);
+
+      if (!carouselContainer || !prevBtn || !nextBtn) return;
+
+      let currentIndex = 0;
+      const existingFragments = Array.from(carouselContainer.querySelectorAll(".text-slide"))
+        .map((slide) => slide.innerHTML);
+      const slideFragments = fragments.length ? fragments : existingFragments;
+
+      if (!slideFragments.length) return;
+
+      carouselContainer.innerHTML = "";
+      slideFragments.forEach((html, index) => {
+        const slide = document.createElement("div");
+        slide.className = "text-slide";
+        slide.innerHTML = html;
+        if (index === 0) slide.classList.add("active");
+        carouselContainer.appendChild(slide);
+      });
+
+      function goToSlide(newIndex) {
+        const slides = carouselContainer.querySelectorAll(".text-slide");
+        if (newIndex === currentIndex || newIndex < 0 || newIndex >= slideFragments.length) return;
+
+        slides[currentIndex].classList.add("exit-up");
+        slides[currentIndex].classList.remove("active");
+        setTimeout(() => slides[currentIndex]?.classList.remove("exit-up"), 500);
+        setTimeout(() => slides[newIndex]?.classList.add("active"), 80);
+        currentIndex = newIndex;
+      }
+
+      prevBtn.addEventListener("click", () => {
+        goToSlide(currentIndex - 1 < 0 ? slideFragments.length - 1 : currentIndex - 1);
+      });
+
+      nextBtn.addEventListener("click", () => {
+        goToSlide((currentIndex + 1) % slideFragments.length);
+      });
+    }
+
+    setupCarousel("textCarouselDown", "prevBtnDown", "nextBtnDown");
+
+    setupCarousel("textCarouselHydra", "prevBtnHydra", "nextBtnHydra", [
+      "Based in <a href='https://github.com/hydralauncher' target='_blank' rel='noopener' style='color:#00e4a5;'>https://github.com/hydralauncher</a>",
+      "This is the first Android assembly of the desktop Hydra app v3.9.5.",
+      "It keeps the React renderer and replaces Electron IPC with an Android/WebView bridge."
+    ]);
+
+    function showHashPanel() {
+      const hashPanel = location.hash.slice(1);
+      if (hashPanel && document.getElementById(hashPanel)?.classList.contains("panel")) {
+        showTab(hashPanel);
+      } else {
+        showTab("releases");
+      }
+    }
+
+    showHashPanel();
+    trackPublicView();
+    window.addEventListener("hashchange", showHashPanel);
+
+    // Back to top button logic
+    const backToTopBtn = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 400) {
+        backToTopBtn.style.display = "flex";
+      } else {
+        backToTopBtn.style.display = "none";
+      }
+    });
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Make all images in release cards clickable to open at full size
+    document.querySelectorAll(".release-card img").forEach((img) => {
+      if (img.closest("a")) return;
+
+      // Show zoom cursor to indicate clickability
+      img.style.cursor = "zoom-in";
+      img.addEventListener("click", () => {
+        window.open(img.src, "_blank");
+      });
+    });
+  </script>
+</body>
+</html>
